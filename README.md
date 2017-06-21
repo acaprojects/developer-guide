@@ -15,13 +15,13 @@
 - **Scalable** from rooms, to buildings, to campuses
 - **Distributed** multi-node replication for live backup and fail-over
 - **Secure** audit-able interaction with the physical environment and encrypted device communication
-- **Traceable** integrates with [Google Analytics](https://www.google.com/analytics/) and [Microsoft Power BI](https://powerbi.microsoft.com/) to provide user insights
+- **Insightful** integrates with [Google Analytics](https://www.google.com/analytics/) and [Microsoft Power BI](https://powerbi.microsoft.com/) to provide usage metrics for physical environments
 
 It handles the low level device communication, system management and connection with user interfaces so that you can focus on how these combine to create intuitive, modern, connected environments.
 
 ?> If you've used traditional, hardware-based control systems before, welcome to the new world.
 
-Before we started building, there are a couple of [key concepts](getting-started/key-concepts.md).
+Jump to [key concepts](getting-started/key-concepts.md) to get start getting familiar with the basics.
 
 
 ## Who builds it?
