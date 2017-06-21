@@ -33,8 +33,8 @@ Examples of settings that could be assigned to devices include: MAC addresses, d
 
 
 * **Logic Drivers** define how a system should operate. A logic device (instance of a logic driver associated with a specific system) will take the settings defined for that system and its devices and will automate the actions defined in the logic driver (Ruby code). The logic will also perform any actions that are bound to inputs from a user interface and provide feedback to that interface.
-* **Device Drivers** define how objects (usually physical devices) that are communicated with using TCP/UDP should be controlled. The driver will define the communication protocol used, the available commands/responses and the processes that should occur upon connection/disconnection/power-up. Devices are instances of device drivers and often represent a single physical device of that type that is being controlled. Logics will control Devices in the same System with any parameters defined in Settings.
-* **Service Drivers** are similar to Device Drivers but use HTTP/S (REST) for communication instead of a custom TCP/UDP protocol (e.g. Screen Technics IP Control). 
+* **Device Drivers** define how objects (usually physical devices) that are communicated with using TCP/UDP should be controlled. The driver will define the communication protocol used, the available commands/responses and the processes that should occur upon connection/disconnection/power-up. Devices are instances of device drivers and often represent a single physical device of that type that is being controlled. Logic modules will control Devices in the same System with any parameters defined in Settings.
+* **Service Drivers** are similar to Device Drivers but use HTTP/S (REST) for communication instead of a custom TCP/UDP protocol.
 
 
 ## Devices
@@ -46,4 +46,4 @@ Devices can be Started or Stopped. When Started, ACA Engine will attempt to conn
 
 ## Interfaces
 
-*Interfaces* are web pages that present the user with controls for the System. Interfaces developed for ACA Engine generally use AngularJS to bind frontend web page elements to backend Logic functions and values. A System’s Logic will take the Settings defined for that system and use it to control (visual) elements on the interface. Interfaces are generally modular and usually connect to a one system at a time.
+*Interfaces* are web pages that present the user with controls for the System. Interfaces developed for ACA Engine generally use [Angular](https://angular.io/) to bind front-end web page elements to back-end Logic functions and values. A System’s Logic will take the Settings defined for that system and use it to control (visual) elements on the interface. Interfaces are generally modular and usually connect to a one system at a time.
