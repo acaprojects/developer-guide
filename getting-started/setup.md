@@ -1,6 +1,3 @@
 # Setup a Development Environment
 
-Hello world!
-
-
-## Foo
+See https://github.com/acaprojects/setup-dev
