@@ -6,7 +6,9 @@
     "sentiment",
     "spelling",
     "statistics",
-    "write-good"
+    "write-good",
+    "../../../../_analysers/aca-branding",
+    "../../../../_analysers/disallowed-phrases"
   ],
   "rules": {
     "buzzword-usage-counts": "info",
@@ -36,6 +38,8 @@
     "statistics-automated-readability-index": "info, warning > 12",
     "statistics-estimated-read-time": "info",
 
-    "write-good-suggestion": "warning"
+    "write-good-suggestion": "warning",
+
+    "disallowed-phrases": "error"
   }
 }
