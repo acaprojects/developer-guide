@@ -14,6 +14,7 @@
   "devDependencies": {
     "docsify-cli": "^4.1.8",
     "eslint": "^4.0.0",
-    "markdown-proofing": "^1.0.2"
+    "markdown-proofing": "^1.0.2",
+    "ramda": "^0.24.1"
   }
 }
