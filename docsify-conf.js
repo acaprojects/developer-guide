@@ -8,12 +8,15 @@ window.$docsify = {
     subMaxLevel: 2,
     auto2top: true,
     search: {
-        noData: `I couldn't find what you are looking for.`
+        noData: 'I couldn\'t find what you are looking for.'
     },
     markdown: {
-        smartypants: true
+        smartypants: true,
     },
+    plugins: [
+        h => h.beforeEach(c => c.replace(/ACAEngine/gi, 'ACA&#8202;Engine'))
+    ],
     alias: {
         '/overview': 'README.md'
     }
-}
+};

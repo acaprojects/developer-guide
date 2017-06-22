@@ -4,13 +4,17 @@
   "description": "Developer guide for ACA Engine",
   "main": "index.js",
   "scripts": {
-    "test": "markdown-proofing [!_]*.md [!node_modules]**/*.md"
+    "lint": "eslint *.js _*/*.js",
+    "proof": "markdown-proofing [!_]*.md [!node_modules]**/*.md",
+    "test": "npm run lint && npm run proof"
   },
-  "author": "Kim Burgess <kim@acaprojects.com",
+  "author": "Kim Burgess <kim@acaprojects.com>",
   "license": "MIT",
   "homepage": "https://www.acaprojects.com",
   "devDependencies": {
     "docsify-cli": "^4.1.8",
-    "markdown-proofing": "^1.0.2"
+    "eslint": "^4.0.0",
+    "markdown-proofing": "^1.0.2",
+    "ramda": "^0.24.1"
   }
 }

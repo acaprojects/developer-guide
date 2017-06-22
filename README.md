@@ -1,4 +1,4 @@
-# ACA&#8202;Engine
+# ACAEngine
 
 > A web-based platform to control your building.
 
@@ -8,7 +8,7 @@
 
 ## What is it?
 
-*ACA&#8202;Engine* is a platform for extending the user experience to the built environment. It is:
+*ACAEngine* is a platform for extending the user experience to the built environment. It is:
 - **Software only** built on the modern web
 - **Open source** continuously improved and backed by a full-time team of developers
 - **Extensible** able to run stand-alone, or integrated into staff, building or third party apps
@@ -26,4 +26,4 @@ Jump to [key concepts](getting-started/key-concepts.md) to get start getting fam
 
 ## Who builds it?
 
-[ACA Projects](https://www.acaprojects.com/) is a small, fast-paced team of developers and designers based in Sydney and Brisbane, Australia. We believe in modern tech and despise black boxes. Open systems and transparency are our default -- you can find full pricing for using Engine in your projects [here](https://www.acaprojects.com/acaenginepricing/).
+[ACA Projects](https://www.acaprojects.com/) are a fast-paced team of developers and designers based in Sydney and Brisbane, Australia. We believe in modern tech and despise black boxes. Open systems and transparency are our default -- you can find full pricing for using ACAEngine in your projects [here](https://www.acaprojects.com/acaenginepricing/).
