@@ -12,7 +12,7 @@ Associating systems with zones serves two purposes:
 
 ## Systems
 
-A *System* is a collection of devices, settings and user interfaces that allow ACA Engine to deliver a control experience to the user.
+A *System* is a collection of devices, settings and user interfaces that allow ACAEngine to deliver a control experience to the user.
 Systems often represent individual physical spaces (such as a meeting room) but can also represent such things as a digital signage endpoint or a non-physical system with information based inputs and outputs. 
 
 
@@ -29,7 +29,7 @@ Examples of settings that could be assigned to devices include: MAC addresses, d
 
 ## Drivers
 
-*Drivers* are Ruby code modules designed specifically to work with ACA Engine and imported into ACA Engine backoffice. A wide selection of open source drivers is available online. There are three types of drivers:
+*Drivers* are Ruby code modules designed specifically to work with ACAEngine and imported into ACAEngine backoffice. A wide selection of open source drivers is available online. There are three types of drivers:
 
 
 * **Logic Drivers** define how a system should operate. A logic device (instance of a logic driver associated with a specific system) will take the settings defined for that system and its devices and will automate the actions defined in the logic driver (Ruby code). The logic will also perform any actions that are bound to inputs from a user interface and provide feedback to that interface.
@@ -41,9 +41,9 @@ Examples of settings that could be assigned to devices include: MAC addresses, d
 
 *Devices* are instances of Device Drivers and represent a single (usually physical) object that is being controlled. A device must be defined with an IP address and should be assigned to one or more Systems, so as to be controlled by that system’s Logic. Devices will inherit any settings defined for that device’s Driver.
 
-Devices can be Started or Stopped. When Started, ACA Engine will attempt to connect to that device and keep track of its online status. When Stopped, ACA Engine will disconnect from that device and not send any commands to it.
+Devices can be Started or Stopped. When Started, ACAEngine will attempt to connect to that device and keep track of its online status. When Stopped, ACAEngine will disconnect from that device and not send any commands to it.
 
 
 ## Interfaces
 
-*Interfaces* are web pages that present the user with controls for the System. Interfaces developed for ACA Engine generally use [Angular](https://angular.io/) to bind front-end web page elements to back-end Logic functions and values. A System’s Logic will take the Settings defined for that system and use it to control (visual) elements on the interface. Interfaces are generally modular and usually connect to a one system at a time.
+*Interfaces* are web pages that present the user with controls for the System. Interfaces developed for ACAEngine generally use [Angular](https://angular.io/) to bind front-end web page elements to back-end Logic functions and values. A System’s Logic will take the Settings defined for that system and use it to control (visual) elements on the interface. Interfaces are generally modular and usually connect to a one system at a time.
