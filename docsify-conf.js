@@ -14,7 +14,7 @@ window.$docsify = {
         smartypants: true,
     },
     plugins: [
-        h => h.beforeEach(c => c.replace('ACAEngine', 'ACA&#8202;Engine'))
+        h => h.beforeEach(c => c.replace(/ACAEngine/gi, 'ACA&#8202;Engine'))
     ],
     alias: {
         '/overview': 'README.md'
