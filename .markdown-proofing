@@ -7,8 +7,8 @@
     "spelling",
     "statistics",
     "write-good",
-    "../../../../_analysers/aca-branding",
-    "../../../../_analysers/disallowed-phrases"
+    "../../../../analysers/aca-branding",
+    "../../../../analysers/disallowed-phrases"
   ],
   "rules": {
     "buzzword-usage-counts": "info",

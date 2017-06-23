@@ -2,9 +2,11 @@ window.$docsify = {
     name: 'ACA Developer Guide',
     repo: 'acaprojects',
     themeColor: '#414858',
-    coverpage: true,
-    loadNavbar: true,
-    loadSidebar: true,
+    basePath: '/docs/',
+    homepage: 'getting-started/overview.md',
+    coverpage: '../../nav/coverpage.md',
+    loadNavbar: false,
+    loadSidebar: '../../nav/sidebar.md',
     subMaxLevel: 2,
     auto2top: true,
     search: {
@@ -15,8 +17,5 @@ window.$docsify = {
     },
     plugins: [
         h => h.beforeEach(c => c.replace(/ACAEngine/gi, 'ACA&#8202;Engine'))
-    ],
-    alias: {
-        '/overview': 'README.md'
-    }
+    ]
 };
