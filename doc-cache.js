@@ -1,8 +1,8 @@
 /*
- * Based on the original docsify sw.js (Copyright 2016 @huxpro)
+ * Based on @huxpro's sw.js (Copyright 2016 @huxpro)
  * Licensed under Apache 2.0.
  *
- * Service worker that locally caching doc contents for offline access.
+ * Service worker to locally caching doc contents for offline access.
  */
 
 const RUNTIME = 'aca-docs';
@@ -14,7 +14,15 @@ const WHITELIST = [
     'unpkg.com'
 ];
 
-const useCache = (url) => WHITELIST.includes(new URL(url).hostname);
+const DEV_HOST = 'localhost:3000';
+
+const inWhitelist = (url) => WHITELIST.includes(url.hostname);
+
+const isNotDevEnv = (url) => url.host !== DEV_HOST;
+
+const checkAll = (...p) => (url) => p.every(f => f(url));
+
+const useCache = checkAll(inWhitelist, isNotDevEnv);
 
 // Map a request object to a cache busted URL that can be passed to fetch.
 const getFixedUrl = (req) => {
@@ -36,7 +44,8 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-    if (useCache(event.request.url)) {
+    const requestUrl = new URL(event.request.url);
+    if (useCache(requestUrl)) {
         const cached = caches.match(event.request);
         const fixedUrl = getFixedUrl(event.request);
         const fetched = fetch(fixedUrl, { cache: 'no-store' });
