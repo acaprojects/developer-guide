@@ -1,29 +1,20 @@
-# ACAEngine
+# ACA Projects Developer Guide
 
-> A web-based platform to control your building.
-
-
-!> This guide is still under development. Check back soon for more info. Until then, [contact a human](mailto:developer@acaprojects.com).
+Looking for the docs? View the pretty version over at https://developer.acaprojects.com.
 
 
-## What is it?
+## Off-line Access
 
-*ACAEngine* is a platform for extending the user experience to the built environment. It is:
-- **Software only** built on the modern web
-- **Open source** continuously improved and backed by a full-time team of developers
-- **Extensible** able to run stand-alone, or integrated into staff, building or third party apps
-- **Scalable** from rooms, to buildings, to campuses
-- **Distributed** multi-node replication for live backup and fail-over
-- **Secure** audit-able interaction with the physical environment and encrypted device communication
-- **Insightful** integrates with [Google Analytics](https://www.google.com/analytics/) and [Microsoft Power BI](https://powerbi.microsoft.com/) to provide usage metrics for physical environments
+After visiting the [ACA developer guide](https://developer.acaprojects.com) with a modern browser, it will continue to load off-line. Magic.
 
-It handles the low level device communication, system management and connection with user interfaces so that you can focus on how these combine to create intuitive, modern, connected environments.
-
-?> If you've used traditional, hardware-based control systems before, welcome to the new world.
-
-Jump to [key concepts](getting-started/key-concepts.md) to get start getting familiar with the basics.
+You can also find the plain text content in [docs/](docs/) if you'd like to go old-school and print with your favourite dot-matrix printer.
 
 
-## Who builds it?
+## Contributing
 
-[ACA Projects](https://www.acaprojects.com/) are a fast-paced team of developers and designers based in Sydney and Brisbane, Australia. We believe in modern tech and despise black boxes. Open systems and transparency are our default -- you can find full pricing for using ACAEngine in your projects [here](https://www.acaprojects.com/acaenginepricing/).
+If there's something that doesn't make sense, please spin up an issue. Or, if you've spotted an error, omission or general slip of stupidity, we <3 PR's. To keep it simple, once you have the repo enable live reload with:
+
+```bash
+npm i docsify-cli -g
+docsify serve .
+```

@@ -1,5 +1,5 @@
 - Getting Started
-    + [Overview](overview)
+    + [Overview](getting-started/overview.md)
     + [Key Concepts](getting-started/key-concepts.md)
     + [Setup a Development Environment](getting-started/setup.md)
 - Module Development

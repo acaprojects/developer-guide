@@ -4,13 +4,13 @@
   "description": "Developer guide for ACA Engine",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint *.js _*/*.js",
-    "proof": "markdown-proofing [!_]*.md [!node_modules]**/*.md",
+    "lint": "eslint *.js anlysers/*.js",
+    "proof": "markdown-proofing *.md docs/**/*.md",
     "test": "npm run lint && npm run proof"
   },
   "author": "Kim Burgess <kim@acaprojects.com>",
   "license": "MIT",
-  "homepage": "https://www.acaprojects.com",
+  "homepage": "https://developer.acaprojects.com",
   "devDependencies": {
     "docsify-cli": "^4.1.8",
     "eslint": "^4.0.0",
