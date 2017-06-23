@@ -14,11 +14,11 @@ const WHITELIST = [
     'unpkg.com'
 ];
 
-const DEV_HOST = 'localhost:3000';
+const DEV_HOST = 'localhost';
 
 const inWhitelist = (url) => WHITELIST.includes(url.hostname);
 
-const isNotDevEnv = (url) => url.host !== DEV_HOST;
+const isNotDevEnv = (url) => url.hostname !== DEV_HOST;
 
 const checkAll = (...p) => (url) => p.every(f => f(url));
 
