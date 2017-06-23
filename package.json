@@ -10,7 +10,7 @@
   },
   "author": "Kim Burgess <kim@acaprojects.com>",
   "license": "MIT",
-  "homepage": "https://www.acaprojects.com",
+  "homepage": "https://developer.acaprojects.com",
   "devDependencies": {
     "docsify-cli": "^4.1.8",
     "eslint": "^4.0.0",
