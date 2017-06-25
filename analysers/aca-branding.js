@@ -52,7 +52,7 @@ module.exports = class ACABrandingAnalyzer {
         // Allow the concatenated version (as per the trademark) only in the
         // original markdown. The renderer will insert a hairline space
         // (&#8202;) before display so we can keep nice typography.
-        errorIf(/\bACA\s+Engine/gi, 'ACAEngine should be written as a single, concatenated word');
+        errorIf(/\bACA\s+Engine\b/gi, 'ACAEngine should be written as a single, concatenated word');
 
         // Text may refer to 'a engine' under another context, but changces are
         // the intended context is ACAEngine.
