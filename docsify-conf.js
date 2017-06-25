@@ -4,9 +4,9 @@ window.$docsify = {
     themeColor: '#414858',
     basePath: '/docs/',
     homepage: 'getting-started/overview.md',
-    coverpage: '../../nav/coverpage.md',
+    coverpage: '../coverpage/coverpage.md',
     loadNavbar: false,
-    loadSidebar: '../../nav/sidebar.md',
+    loadSidebar: '../../../docs/contents.md',
     subMaxLevel: 2,
     auto2top: true,
     search: {
