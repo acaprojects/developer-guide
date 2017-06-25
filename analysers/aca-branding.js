@@ -54,9 +54,9 @@ module.exports = class ACABrandingAnalyzer {
         // (&#8202;) before display so we can keep nice typography.
         errorIf(/\bACA\s+Engine\b/gi, 'ACAEngine should be written as a single, concatenated word');
 
-        // Text may refer to 'a engine' under another context, but changces are
+        // Text may refer to 'engine' under another context, but chances are
         // the intended context is ACAEngine.
-        warnIf(/\b(?!ACA)\w+\s+Engine\b/gi, 'Engine should be prefixed as ACAEngine');
+        warnIf(/\bEngine\b/gi, 'Engine should be prefixed as ACAEngine');
 
         return result;
     }
