@@ -47,7 +47,7 @@ module.exports = class ACABrandingAnalyzer {
         const warnIf = alerter('aca-branding-warning');
 
         // Ensure 'ACAEngine' is always referred to with correct capitalisation.
-        errorIf(/\b(?!ACAEngine)[Aa][Cc][Aa][Ee]ngine\b/, 'ACAEngine capitalised incorrectly');
+        errorIf(/\b(?!ACAEngine)[Aa][Cc][Aa][Ee]ngine\b/g, 'ACAEngine capitalised incorrectly');
 
         // Allow the concatenated version (as per the trademark) only in the
         // original markdown. The renderer will insert a hairline space
