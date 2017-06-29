@@ -13,9 +13,9 @@ const npmconfig = require('./package.json');
 
 const paths = {
     src: 'src/',
-    docs: 'docs/',
-    lib: 'lib/',                    // compiled source
-    dist: 'dist/',                  // packaged assets ready for deploy
+    content: 'docs/',
+    build: 'lib/',
+    public: 'dist/'    // packaged assets ready for deploy
 };
 
 /**
@@ -28,7 +28,7 @@ const pipeTo = (dest: NodeJS.ReadWriteStream) =>
 /**
  * Pipe a collection of streams out to our dist directory.
  */
-const pipeToDist = pipeTo(gulp.dest(paths.dist));
+const pipeToDist = pipeTo(gulp.dest(paths.public));
 
 /**
  * Wrap a shell command as an async child process.
@@ -56,9 +56,9 @@ gulp.task('lint', () =>
 /**
  * Run the proofing tools over doc contents.
  */
-gulp.task('proof', (done) =>
+gulp.task('proof', () =>
     proof([
-        `${paths.docs}**/*.md`
+        `${paths.content}**/*.md`
     ])
 );
 
@@ -67,8 +67,8 @@ gulp.task('proof', (done) =>
  */
 gulp.task('clean', () =>
     del([
-        paths.dist,
-        paths.lib
+        paths.public,
+        paths.build
     ])
 );
 
