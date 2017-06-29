@@ -41,7 +41,7 @@ const shellProcess = (command: string) =>
  * Run a set of markdown files through proofing tools for readability, spelling
  * and language analytics.
  */
-const proof = shellProcess('markdown-proofing');
+const proof = shellProcess('node node_modules/markdown-proofing/cli.js');
 
 /**
  * Lint all project Typescript source.
