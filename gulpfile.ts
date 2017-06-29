@@ -10,11 +10,12 @@ import * as merge from 'merge2';
 const tsProject = tsc.createProject('./tsconfig.json');
 
 const npmconfig = require('./package.json');
+const tscConfig = require('./tsconfig.json');
 
 const paths = {
-    src: 'src/',
+    src: tscConfig.compilerOptions.baseUrl,
+    build: tscConfig.compilerOptions.outDir,
     content: 'docs/',
-    build: 'lib/',
     public: 'dist/'    // packaged assets ready for deploy
 };
 
@@ -28,7 +29,7 @@ const pipeTo = (dest: NodeJS.ReadWriteStream) =>
 /**
  * Pipe a collection of streams out to our dist directory.
  */
-const pipeToDist = pipeTo(gulp.dest(paths.public));
+const pipeToDist = pipeTo(gulp.dest(paths.build));
 
 /**
  * Wrap a shell command as an async child process.
