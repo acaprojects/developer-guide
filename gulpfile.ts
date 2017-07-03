@@ -84,7 +84,7 @@ gulp.task('build', () =>
     (
         (...src: NodeJS.ReadWriteStream[]) => {
             const tscOutput = merge(src).pipe(tsProject());
-            const pipeToBuild = pipeTo(paths.build);
+            const pipeToBuild = pipeTo(gulp.dest(paths.build));
             return pipeToBuild(
                 tscOutput.js,
                 tscOutput.dts
