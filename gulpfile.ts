@@ -1,7 +1,7 @@
 import * as gulp from 'gulp';
 import * as tsc from 'gulp-typescript';
+import * as message from 'gulp-message';
 import tslint from 'gulp-tslint';
-import { promisify } from 'util';
 import { exec } from 'child_process';
 import * as runSequence from 'run-sequence';
 import * as del from 'del';
@@ -24,72 +24,83 @@ const paths = {
  * results.
  */
 const pipeTo = (dest: NodeJS.ReadWriteStream) =>
-    (...src: NodeJS.ReadableStream[]) => merge(src.map((s) => s.pipe(dest)));
-
-/**
- * Pipe a collection of streams out to our dist directory.
- */
-const pipeToDist = pipeTo(gulp.dest(paths.build));
-
-/**
- * Wrap a shell command as an async child process.
- */
-const shellProcess = (command: string) =>
-    (args: string[] = []) => promisify(exec)(`${command} ${args.join(' ')}`);
-
-/**
- * Run a set of markdown files through proofing tools for readability, spelling
- * and language analytics.
- */
-const proof = shellProcess('node node_modules/markdown-proofing/cli.js');
+    (...src: NodeJS.ReadableStream[]) =>
+    merge(src.map(s => s.pipe(dest)));
 
 /**
  * Lint all project Typescript source.
  */
 gulp.task('lint', () =>
-    tsProject.src()
-        .pipe(tslint({
-            formatter: 'verbose'
-        }))
-        .pipe(tslint.report())
+    (
+        (...src: NodeJS.ReadWriteStream[]) =>
+            merge(src)
+                .pipe(tslint({
+                    formatter: 'verbose'
+                }))
+                .pipe(tslint.report())
+    )
+    (
+        tsProject.src(),
+        gulp.src(__filename)
+    )
 );
 
 /**
  * Run the proofing tools over doc contents.
  */
-gulp.task('proof', () =>
-    proof([
-        `${paths.content}**/*.md`
-    ])
+gulp.task('proof', cb =>
+    (
+        (...globs: string[]) =>
+            exec(`node node_modules/markdown-proofing/cli.js ${globs.join(' ')} --color`,
+                (err, stdout, stderr) => {
+                    message.info(stdout);
+                    cb(err);
+                }
+            )
+    )
+    (
+        `${paths.content}**/*.md`,
+        '*.md'
+    )
 );
 
 /**
- * Nuke any output from anything constructer by build / doc scripts below.
+ * Nuke old build assetts.
  */
 gulp.task('clean', () =>
-    del([
+    (
+        (...globs: string[]) => del(globs)
+    )
+    (
         paths.public,
         paths.build
-    ])
+    )
 );
 
 /**
  * Transpile the Typescript project components.
  */
-gulp.task('build', () => {
-    const tscOutput = tsProject.src().pipe(tsProject());
-
-    return pipeToDist(
-        tscOutput.js,
-        tscOutput.dts
-    );
-});
+gulp.task('build', () =>
+    (
+        (...src: NodeJS.ReadWriteStream[]) => {
+            const tscOutput = merge(src).pipe(tsProject());
+            const pipeToBuild = pipeTo(paths.build);
+            return pipeToBuild(
+                tscOutput.js,
+                tscOutput.dts
+            );
+        }
+    )
+    (
+        tsProject.src()
+    )
+);
 
 // TODO package / deploy
 
 gulp.task('default', () =>
-    runSequence([
-        'proof',
+    runSequence(
+        ['proof', 'clean'],
         'build'
-    ])
+    )
 );
