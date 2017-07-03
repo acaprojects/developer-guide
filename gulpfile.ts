@@ -20,7 +20,7 @@ const paths = {
 };
 
 /**
- * Pipe a collection of streams to and arbitrart destination and merge the
+ * Pipe a collection of streams to and arbitrary destination and merge the
  * results.
  */
 const pipeTo = (dest: NodeJS.ReadWriteStream) =>
@@ -65,7 +65,7 @@ gulp.task('proof', cb =>
 );
 
 /**
- * Nuke old build assetts.
+ * Nuke old build assets.
  */
 gulp.task('clean', () =>
     (
