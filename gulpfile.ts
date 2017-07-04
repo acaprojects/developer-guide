@@ -17,7 +17,7 @@ const npmconfig = require('./package.json');
 const tscConfig = require('./tsconfig.json');
 
 const paths = {
-    src: 'src/',
+    src: tscConfig.compilerOptions.baseUrl,
     build: tscConfig.compilerOptions.outDir,
     content: 'docs/',
     public: 'dist/'    // packaged assets ready for deploy
