@@ -28,6 +28,8 @@ const paths = {
 
 /**
  * Create a pipe that directs a single stream to an arbitrary destination.
+ *
+ * :: WritableStream a, ReadableStream b => a -> b -> a
  */
 const pipe = <T extends NodeJS.WritableStream, U extends NodeJS.ReadableStream>
     (dest: T) => (src: U) => src.pipe(dest);
@@ -38,18 +40,24 @@ const pipe = <T extends NodeJS.WritableStream, U extends NodeJS.ReadableStream>
  * Note: intentionally just a thin wrapper around merge2 in order to provide
  * a generic type restricted to ReadWriteStreams. Without this tsc has issues
  * due to the possible IOptions type.
+ *
+ * :: ReadWriteStream a => [a] -> a
  */
 const merge = <T extends NodeJS.ReadWriteStream>
     (streams: T[]) => merge2(streams);
 
 /**
  * Merge and pipe a collection of streams to an arbitrary destination.
+ *
+ * :: ReadWriteStream a, ReadableStream b => a -> [b] -> a
  */
 const pipeTo = <T extends NodeJS.ReadWriteStream, U extends NodeJS.ReadableStream>
     (dest: T) => (src: U[]) => R.compose(pipe(dest), merge)(src);
 
 /**
  * Create a pipe that will send the incoming contents to a folder on disk.
+ *
+ * :: ReadableStream a, ReadWriteStream b => string -> [a] -> b
  */
 const writeTo = R.compose(pipeTo, gulp.dest);
 
