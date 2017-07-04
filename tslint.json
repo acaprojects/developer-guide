@@ -59,6 +59,7 @@
       "never-prefix"
     ],
     "unified-signatures": false,
-    "ordered-imports": false
+    "ordered-imports": false,
+    "arrow-parens": [true, "ban-single-arg-parens"]
   }
 }
