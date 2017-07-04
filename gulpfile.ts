@@ -45,7 +45,7 @@ const merge = <T extends NodeJS.ReadWriteStream>
 /**
  * Merge and pipe a collection of streams to an arbitrary destination.
  */
-const pipeTo = <T extends NodeJS.WritableStream, U extends NodeJS.ReadableStream>
+const pipeTo = <T extends NodeJS.ReadWriteStream, U extends NodeJS.ReadableStream>
     (dest: T) => (src: U[]) => R.compose(pipe(dest), merge)(src);
 
 /**
@@ -111,7 +111,7 @@ gulp.task('clean', () =>
  */
 gulp.task('build', () =>
     (
-        (...src: NodeJS.ReadWriteStream[]) => {
+        (...src: NodeJS.ReadableStream[]) => {
             const compile = pipeTo(tsProject());
             const {js, dts} = compile(src);
             return writeTo(paths.build)([js, dts]);
