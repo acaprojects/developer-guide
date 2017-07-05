@@ -4,7 +4,7 @@ const rules: RegExpAnalyserRule[] = [
     ['aca-branding-error', [
         [
             // Ensure 'ACAEngine' is always referred to with correct
-            // scapitalisation.
+            // capitalisation.
             /\b(?!ACAEngine)[Aa][Cc][Aa][Ee]ngine\b/g,
             'is incorrect capitalisation - use "ACAEngine"'
         ],
