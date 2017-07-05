@@ -4,11 +4,11 @@ import { AnalyserMessage, Location } from './analyser-lib';
 /**
  * Generator for every occurrence of a regex within a string.
  */
-function* execAll(re: RegExp, str: string) {
+function* execAll(re: RegExp, str: string): IterableIterator<RegExpExecArray> {
     const match = re.exec(str);
     if (match != null) {
         yield match;
-        execAll(re, str);
+        yield* execAll(re, str);
     }
 }
 
