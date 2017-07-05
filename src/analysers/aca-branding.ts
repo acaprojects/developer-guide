@@ -1,9 +1,18 @@
-import * as AnalyzerResult from 'markdown-proofing/lib/analyzer-result';
-import { getLine, getLineColumn } from 'markdown-proofing/lib/location';
 import * as R from 'ramda';
 
+const analyzerResult: {
+    new (): {
+        addMessage(type: string, text: string, line: number, column: number): void;
+    }
+} = require('markdown-proofing/lib/analyzer-result');
+
+const location: {
+    getLine(source: string, index: number): number;
+    getLineColumn(source: string, index: number): number;
+} = require('markdown-proofing/lib/location');
+
 /**
- * Generator for every occurance of a regex within a string.
+ * Generator for every occurrence of a regex within a string.
  */
 function* execAll(re: RegExp, str: string) {
     const match = re.exec(str);
@@ -16,28 +25,35 @@ function* execAll(re: RegExp, str: string) {
 /**
  * Create a list of regex match objects found within a string.
  */
-const occurances = R.pipe(execAll, Array.from);
-
-/**
- * Map a (str, index) to a [line, column] tuple.
- */
-const lineCol = R.juxt([getLine, getLineColumn]);
+const occurances: (re: RegExp, srt: string) => RegExpExecArray[]
+    = R.pipe(execAll, Array.from);
 
 /**
  * Map a regex match object to a [line, column] tuple of the match location.
  */
-const locate = (match: RegExpExecArray) => lineCol(match.input, match.index);
+const locate = (match: RegExpExecArray) =>
+    R.map(
+        f => f(match.input, match.index),
+        [location.getLine, location.getLineColumn]
+    ) as [number, number];
 
 /**
  * Text analyser for ensure ACA product names use the correct syntax.
  */
-export default class ACABrandingAnalyzer {
-    public static analyze(content: string) {
-        const result = new AnalyzerResult();
+class ACABrandingAnalyzer {
+    public constructer() {
+        // Nothing to do here, specified so tsc exposes this correctly.
+    }
+
+    public analyze(content: string) {
+        const result = new analyzerResult();
 
         const alert = (rule: string, info: string) =>
-            (match: RegExpExecArray) =>
-            result.addMessage(rule, info, ...locate(match));
+            (match: RegExpExecArray) => {
+                const [line, column] = locate(match);
+                const message = `"${match[0]}" ${info}`;
+                result.addMessage(rule, message, line, column);
+            };
 
         const findAll = (re: RegExp) => occurances(re, content);
 
@@ -72,3 +88,5 @@ export default class ACABrandingAnalyzer {
         return result;
     }
 }
+
+module.exports = ACABrandingAnalyzer;
