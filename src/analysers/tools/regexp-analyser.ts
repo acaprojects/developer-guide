@@ -33,19 +33,33 @@ const message = (type: string, text: string) =>
     };
 
 /**
- * Build an parser which once provided with the rule name, a regexp and info
- * message will parse content to list of AnalyserMessages containing any
- * violations found.
+ * Build an parser which once provided with the rule name, and a ParserDef will
+ * parse content to list of AnalyserMessages containing any violations found.
  */
-const createParser = (rule: string, re: RegExp, info: string) =>
+const createParser = (rule: string) =>
+    (parser: ParserDef) =>
     (content: string) =>
-    R.map(message(rule, info), execAll(re, content));
+    R.map(message(rule, parser[1]), execAll(parser[0], content));
 
 /**
- * Map a rule definition to a list of Parsers.
+ * Map a single rule definition to a list of Parsers.
  */
-const createParsers = (r: RegExpAnalyserRule) =>
-    R.map(p => createParser(r[0], p[0], p[1]), r[1]);
+const createParsersForRule = (rule: RegExpAnalyserRule) =>
+    R.map(createParser(rule[0]), rule[1]);
+
+/**
+ * Flatmap a rule set to all of the Parsers it defines.
+ */
+const createParsers = R.chain(createParsersForRule);
+
+/**
+ * Parse a body of content for occurrences of an arbitrary set of rules and
+ * return a list of AnalysersMessages containing any violations.
+ */
+const parse = (content: string, rules: RegExpAnalyserRule[]) => {
+    const parsers = createParsers(rules);
+    return R.chain(p => p(content), parsers);
+};
 
 /**
  * Base class for creating analysers which parse a body of text for matches
@@ -56,11 +70,8 @@ export abstract class RegExpAnalyser implements Analyser {
     }
 
     public analyze(content: string) {
-        const parsers = R.chain(createParsers, this.rules);
-
         const result = new AnalyserResult();
-        result.messages = R.chain(f => f(content), parsers);
-
+        result.messages = parse(content, this.rules);
         return result;
     }
 }
