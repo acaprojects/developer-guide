@@ -1,15 +1,21 @@
-const matchWordListAnalyzer: {
-    new (rule: string, phrases: Array<string | RegExp>): {};
-} = require('markdown-proofing/lib/analyzers/match-word-list');
+import { RegExpAnalyserRule, RegExpAnalyser } from './tools/regexp-analyser';
 
-const phrases = [
-    /\bAMX\b/,                  // Don't be dick and talk down competitors
-    /\bCrestron\b/
+const rules: RegExpAnalyserRule[] = [
+    ['disallowed-phrases', [
+        [
+            // Check for mentions of competitors.
+            /\b(AMX)|(Crestron)|(Extron)\b/gi,
+            `don't be a dick and talk down competitors - they build nice things too`
+        ]
+    ]],
 ];
 
-class DisallowedPhrasesAnalyzer extends matchWordListAnalyzer {
+/**
+ * Text analyser for scanning for any disallowed phrases.
+ */
+class DisallowedPhrasesAnalyzer extends RegExpAnalyser {
     constructor() {
-        super('disallowed-phrases', phrases);
+        super(rules);
     }
 }
 
