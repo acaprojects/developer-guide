@@ -67,7 +67,7 @@ class ACABrandingAnalyzer {
         // Ensure 'ACAEngine' is always referred to with correct capitalisation.
         errorIf(
             /\b(?!ACAEngine)[Aa][Cc][Aa][Ee]ngine\b/g,
-            'ACAEngine capitalised incorrectly'
+            'is incorrect capitalisation - use "ACAEngine"'
         );
 
         // Allow the concatenated version (as per the trademark) only in the
@@ -75,14 +75,14 @@ class ACABrandingAnalyzer {
         // (&#8202;) before display so we can keep nice typography.
         errorIf(
             /\bACA\s+Engine\b/gi,
-            'ACAEngine should be written as a single, concatenated word'
+            'contains incorrect spacing - use "ACAEngine"'
         );
 
         // Text may refer to 'engine' under another context, but chances are
         // the intended context is ACAEngine.
         warnIf(
             /\bEngine\b/gi,
-            'Engine should be prefixed as ACAEngine'
+            'may be missing a prefix - use "ACAEngine" if referring to the product'
         );
 
         return result;
