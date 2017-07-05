@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 import { AnalyserResult } from './tools/analyser-lib';
-import { analyser } from './tools/regex-analyser';
+import { analyser } from './tools/regex-parser';
 
 /**
  * Text analyser for ensure ACA product names use the correct syntax.
