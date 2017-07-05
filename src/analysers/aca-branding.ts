@@ -1,41 +1,6 @@
 import * as R from 'ramda';
-
-const analyzerResult: {
-    new (): {
-        addMessage(type: string, text: string, line: number, column: number): void;
-    }
-} = require('markdown-proofing/lib/analyzer-result');
-
-const location: {
-    getLine(source: string, index: number): number;
-    getLineColumn(source: string, index: number): number;
-} = require('markdown-proofing/lib/location');
-
-/**
- * Generator for every occurrence of a regex within a string.
- */
-function* execAll(re: RegExp, str: string) {
-    const match = re.exec(str);
-    if (match != null) {
-        yield match;
-        execAll(re, str);
-    }
-}
-
-/**
- * Create a list of regex match objects found within a string.
- */
-const occurances: (re: RegExp, srt: string) => RegExpExecArray[]
-    = R.pipe(execAll, Array.from);
-
-/**
- * Map a regex match object to a [line, column] tuple of the match location.
- */
-const locate = (match: RegExpExecArray) =>
-    R.map(
-        f => f(match.input, match.index),
-        [location.getLine, location.getLineColumn]
-    ) as [number, number];
+import { AnalyserResult } from './tools/analyser-lib';
+import { analyser } from './tools/regex-analyser';
 
 /**
  * Text analyser for ensure ACA product names use the correct syntax.
@@ -46,44 +11,35 @@ class ACABrandingAnalyzer {
     }
 
     public analyze(content: string) {
-        const result = new analyzerResult();
+        const errorIf = analyser('aca-branding-error');
+        const warnIf = analyser('aca-branding-warning');
 
-        const alert = (rule: string, info: string) =>
-            (match: RegExpExecArray) => {
-                const [line, column] = locate(match);
-                const message = `"${match[0]}" ${info}`;
-                result.addMessage(rule, message, line, column);
-            };
+        const rules  = [
+            // Ensure 'ACAEngine' is always referred to with correct capitalisation.
+            errorIf(
+                /\b(?!ACAEngine)[Aa][Cc][Aa][Ee]ngine\b/g,
+                'is incorrect capitalisation - use "ACAEngine"'
+            ),
 
-        const findAll = (re: RegExp) => occurances(re, content);
+            // Allow the concatenated version (as per the trademark) only in the
+            // original markdown. The renderer will insert a hairline space
+            // (&#8202;) before display so we can keep nice typography.
+            errorIf(
+                /\bACA\s+Engine\b/gi,
+                'contains incorrect spacing - use "ACAEngine"'
+            ),
 
-        const alerter = (rule: string) =>
-            (re: RegExp, info: string) =>
-            R.map(alert(rule, info), findAll(re));
+            // Text may refer to 'engine' under another context, but chances are
+            // the intended context is ACAEngine.
+            warnIf(
+                /\bEngine\b/gi,
+                'may be missing a prefix - use "ACAEngine" if referring to the product'
+            )
+        ];
 
-        const errorIf = alerter('aca-branding-error');
-        const warnIf = alerter('aca-branding-warning');
+        const result = new AnalyserResult();
 
-        // Ensure 'ACAEngine' is always referred to with correct capitalisation.
-        errorIf(
-            /\b(?!ACAEngine)[Aa][Cc][Aa][Ee]ngine\b/g,
-            'is incorrect capitalisation - use "ACAEngine"'
-        );
-
-        // Allow the concatenated version (as per the trademark) only in the
-        // original markdown. The renderer will insert a hairline space
-        // (&#8202;) before display so we can keep nice typography.
-        errorIf(
-            /\bACA\s+Engine\b/gi,
-            'contains incorrect spacing - use "ACAEngine"'
-        );
-
-        // Text may refer to 'engine' under another context, but chances are
-        // the intended context is ACAEngine.
-        warnIf(
-            /\bEngine\b/gi,
-            'may be missing a prefix - use "ACAEngine" if referring to the product'
-        );
+        result.messages = R.chain(f => f(content), rules);
 
         return result;
     }
