@@ -3,6 +3,10 @@
 
 /* tslint:disable: variable-name */
 
+export abstract class Analyser {
+    public abstract analyze(content: string): AnalyserResult;
+}
+
 export interface AnalyserMessage {
     readonly type: string;
     readonly text: string;

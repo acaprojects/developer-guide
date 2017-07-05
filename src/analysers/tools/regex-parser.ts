@@ -43,7 +43,7 @@ const message = (type: string, text: string) =>
  * message will parse content to list of AnalyserMessages containing any
  * violations found.
  */
-export const analyser = (rule: string) =>
+export const parseFor = (rule: string) =>
     (re: RegExp, info: string) =>
     (content: string) =>
         R.map(message(rule, info), occurances(re, content));

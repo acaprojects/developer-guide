@@ -1,18 +1,14 @@
 import * as R from 'ramda';
-import { AnalyserResult } from './tools/analyser-lib';
-import { analyser } from './tools/regex-parser';
+import { Analyser, AnalyserResult } from './tools/analyser-lib';
+import { parseFor } from './tools/regex-parser';
 
 /**
  * Text analyser for ensure ACA product names use the correct syntax.
  */
-class ACABrandingAnalyzer {
-    public constructer() {
-        // Nothing to do here, specified so tsc exposes this correctly.
-    }
-
+class ACABrandingAnalyser implements Analyser {
     public analyze(content: string) {
-        const errorIf = analyser('aca-branding-error');
-        const warnIf = analyser('aca-branding-warning');
+        const errorIf = parseFor('aca-branding-error');
+        const warnIf = parseFor('aca-branding-warning');
 
         const rules  = [
             // Ensure 'ACAEngine' is always referred to with correct capitalisation.
@@ -45,4 +41,4 @@ class ACABrandingAnalyzer {
     }
 }
 
-module.exports = ACABrandingAnalyzer;
+module.exports = ACABrandingAnalyser;
