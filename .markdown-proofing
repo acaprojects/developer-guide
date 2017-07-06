@@ -2,6 +2,7 @@
   "analyzers": [
     "buzzwords",
     "fillers",
+    "sensitivity",
     "passive-voice",
     "sentiment",
     "spelling",
@@ -14,6 +15,8 @@
     "buzzword-usage-counts": "info",
 
     "filler-words-usage-counts": "info",
+
+    "sensitivity": "warning",
 
     "passive-voice-usage-count": "info",
 
