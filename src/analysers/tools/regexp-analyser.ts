@@ -16,12 +16,6 @@ export type ParserDef = [RegExp, string];
 export type RegExpAnalyserRule = [string, ParserDef[]];
 
 /**
- * Function which when passed a body of text will create a set of
- * AnalyserMessages for violations against Analyser rules.
- */
-type Parser = (content: string) => AnalyserMessage[];
-
-/**
  * Pre-parser for creating AnlyzerMessages. Provides partial application of
  * arguments and insertion of context into info message.
  */

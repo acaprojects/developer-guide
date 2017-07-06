@@ -11,14 +11,13 @@ import * as R from 'ramda';
 // ------
 // Config
 
-const tsProject = tsc.createProject('./tsconfig.json');
-
-const npmconfig = require('./package.json');
-const tscConfig = require('./tsconfig.json');
+const tsConfigFile = './tsconfig.json';
+const tsProject = tsc.createProject(tsConfigFile);
+const tsConfig = require(tsConfigFile);
 
 const paths = {
-    src: tscConfig.compilerOptions.baseUrl,
-    build: tscConfig.compilerOptions.outDir,
+    src: tsConfig.compilerOptions.baseUrl,
+    build: tsConfig.compilerOptions.outDir,
     content: 'docs/',
     public: 'dist/'    // packaged assets ready for deploy
 };
@@ -89,7 +88,7 @@ gulp.task('proof', cb =>
     (
         (...globs: string[]) =>
             exec(`node node_modules/markdown-proofing/cli.js ${globs.join(' ')} --color`,
-                (err, stdout, stderr) => {
+                (err, stdout) => {
                     message.info(stdout);
                     cb(err);
                 }
