@@ -48,16 +48,22 @@ const getFixedUrl = (req: Request) => {
     return url.href;
 };
 
+/**
+ * Fetch a resource, bypassing any browser caching.
+ */
+const fetchAlways = (r: Request) =>
+    fetch(getFixedUrl(r), { cache: 'no-store' });
+
 sw.addEventListener('activate', event => {
     event.waitUntil(sw.clients.claim());
 });
 
 sw.addEventListener('fetch', event => {
     const requestUrl = new URL(event.request.url);
+
     if (useCache(requestUrl)) {
         const cached = caches.match(event.request);
-        const fixedUrl = getFixedUrl(event.request);
-        const fetched = fetch(fixedUrl, { cache: 'no-store' });
+        const fetched = fetchAlways(event.request);
         const fetchedCopy = fetched.then(resp => resp.clone());
 
         // Call respondWith() with whatever we get first.

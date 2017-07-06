@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "ACA Engine Developer Guide",
   "scripts": {
-    "pretest": "eslint *.js anlysers/*.js",
-    "test": "markdown-proofing *.md docs/**/*.md",
+    "pretest": "gulp lint compile",
+    "test": "gulp proof",
     "start": "docsify serve ."
   },
   "author": "Kim Burgess <kim@acaprojects.com>",

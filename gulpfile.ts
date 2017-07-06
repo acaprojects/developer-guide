@@ -16,7 +16,7 @@ const tsProject = tsc.createProject(tsConfigFile);
 const tsConfig = require(tsConfigFile);
 
 const paths = {
-    src: tsConfig.compilerOptions.baseUrl,
+    src: 'src/',
     build: tsConfig.compilerOptions.outDir,
     content: 'docs/',
     public: 'dist/'    // packaged assets ready for deploy
@@ -58,7 +58,7 @@ const pipeTo = <T extends NodeJS.ReadWriteStream, U extends NodeJS.ReadableStrea
  *
  * :: ReadableStream a, ReadWriteStream b => string -> [a] -> b
  */
-const writeTo = R.compose(pipeTo, gulp.dest);
+const writeTo = R.compose(pipeTo, (folder: string) => gulp.dest(folder));
 
 // ------
 // Tasks
@@ -116,7 +116,7 @@ gulp.task('clean', () =>
 /**
  * Transpile the Typescript project components.
  */
-gulp.task('build', () =>
+gulp.task('compile', () =>
     (
         (...src: NodeJS.ReadableStream[]) => {
             const compile = pipeTo(tsProject());
@@ -129,12 +129,42 @@ gulp.task('build', () =>
     )
 );
 
+/**
+ * Collect all the assets need for the public site.
+ */
+gulp.task('package', () =>
+    (
+        (...globs: string[]) => {
+            const site = gulp.src(globs);
+            return writeTo(paths.public)([site]);
+        }
+    )
+    (
+        `${paths.src}app/*.html`,
+        `${paths.src}app/*.ico`,
+        `${paths.src}app/coverpage*`,
+        `${paths.build}/app/*.js`,
+        `${paths.content}**/*.*`
+    )
+);
+
+gulp.task('build', () =>
+    (
+        (...tasks: Array<string | string[]>) => runSequence(...tasks)
+    )
+    (
+        ['lint', 'clean'],
+        'compile',
+        'proof',
+        'package',
+    )
+);
+
 gulp.task('default', () =>
     (
         (...tasks: Array<string | string[]>) => runSequence(...tasks)
     )
     (
-        ['proof', 'clean'],
-        'build',
+        'build'
     )
 );
