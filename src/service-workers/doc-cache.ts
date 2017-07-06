@@ -5,27 +5,36 @@
  * Service worker to locally caching doc contents for offline access.
  */
 
-const RUNTIME = 'aca-docs';
+const sw = self as ServiceWorkerGlobalScope;
+
+const CACHE_NAME = 'aca-docs';
 
 const WHITELIST = [
-    self.location.hostname,
+    sw.location.hostname,
     'fonts.gstatic.com',
     'fonts.googleapis.com',
     'unpkg.com'
 ];
 
-const DEV_HOST = 'localhost';
+const BLACKLIST = [
+    'localhost'        // Disable cache for local dev
+];
 
-const inWhitelist = (url) => WHITELIST.includes(url.hostname);
+type Predicate<T> = (x: T) => boolean;
 
-const isNotDevEnv = (url) => url.hostname !== DEV_HOST;
+const isIn = <T>(xs: T[]) => (x: T) => xs.indexOf(x) > -1;
 
-const checkAll = (...p) => (url) => p.every(f => f(url));
+const checkAll = <T>(...p: Array<Predicate<T>>) => (x: T) => p.every(f => f(x));
 
-const useCache = checkAll(inWhitelist, isNotDevEnv);
+const useCache = checkAll<URL>(
+    url => isIn(WHITELIST)(url.hostname),
+    url => !isIn(BLACKLIST)(url.hostname)
+);
 
-// Map a request object to a cache busted URL that can be passed to fetch.
-const getFixedUrl = (req) => {
+/**
+ * Map a request object to a cache busted URL that can be passed to fetch.
+ */
+const getFixedUrl = (req: Request) => {
     const url = new URL(req.url);
 
     url.protocol = self.location.protocol;
@@ -39,11 +48,11 @@ const getFixedUrl = (req) => {
     return url.href;
 };
 
-self.addEventListener('activate', event => {
-    event.waitUntil(self.clients.claim());
+sw.addEventListener('activate', event => {
+    event.waitUntil(sw.clients.claim());
 });
 
-self.addEventListener('fetch', event => {
+sw.addEventListener('fetch', event => {
     const requestUrl = new URL(event.request.url);
     if (useCache(requestUrl)) {
         const cached = caches.match(event.request);
@@ -63,8 +72,12 @@ self.addEventListener('fetch', event => {
 
         // Update the cache with the version we fetched (only for ok status)
         event.waitUntil(
-            Promise.all([fetchedCopy, caches.open(RUNTIME)])
-                .then(([response, cache]) => response.ok && cache.put(event.request, response))
+            Promise.all([fetchedCopy, caches.open(CACHE_NAME)])
+                .then(([response, cache]) =>
+                    response.ok
+                        ? cache.put(event.request, response)
+                        : undefined
+                )
                 .catch(() => { /* eat any errors */ })
         );
     }

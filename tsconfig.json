@@ -5,6 +5,7 @@
     "typeRoots": ["node_modules/@types"],
     "target": "es6",
     "module": "commonjs",
+    "lib": ["ES6", "WebWorker"],
     "declaration": true,
     "moduleResolution": "node",
     "noImplicitAny": true,
