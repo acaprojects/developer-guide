@@ -90,7 +90,11 @@ const bundle = (entry: string, src = paths.build, dest = paths.public) =>
     .then(b =>
         b.write({
             dest: join(dest, basename(entry)),
-            format: 'iife'
+            format: 'iife',
+
+            // FIXME this is a nasty hack to get around tsc outputting
+            // Object.defineProperty(exports, "__esModule", { value: true });
+            intro: `if (typeof exports === 'undefined') var exports = {}`
         })
     );
 
