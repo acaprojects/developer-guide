@@ -3,6 +3,7 @@ import * as tsc from 'gulp-typescript';
 import * as message from 'gulp-message';
 import tslint from 'gulp-tslint';
 import { exec } from 'child_process';
+import { join } from 'path';
 import * as runSequence from 'run-sequence';
 import * as del from 'del';
 import * as merge2 from 'merge2';
@@ -11,16 +12,23 @@ import * as R from 'ramda';
 // ------
 // Config
 
-const tsConfigFile = './tsconfig.json';
-const tsProject = tsc.createProject(tsConfigFile);
-const tsConfig = require(tsConfigFile);
-
 const paths = {
     src: 'src/',
-    build: tsConfig.compilerOptions.outDir,
+    build: 'lib/',
     content: 'docs/',
     public: 'dist/'    // packaged assets ready for deploy
 };
+
+const tsConfig = (project: string, basePath = paths.src) =>
+    join('./', basePath, project, 'tsconfig.json');
+
+const tsProject = R.compose<string, string, tsc.Project>(tsc.createProject, tsConfig);
+
+// This project is composed of a few discrete TS components due to the need to
+// use different libraries / compile targets.
+const app = tsProject('app');
+const serviceWorkers = tsProject('service-workers');
+const analysers = tsProject('analysers');
 
 // ------
 // Tools
@@ -59,6 +67,17 @@ const pipeTo = <T extends NodeJS.ReadWriteStream, U extends NodeJS.ReadableStrea
  * :: ReadableStream a, ReadWriteStream b => string -> [a] -> b
  */
 const writeTo = R.compose(pipeTo, (folder: string) => gulp.dest(folder));
+
+/**
+ *  Compile a TSC project.
+ *
+ * :: Project -> ReadWriteStream
+ */
+const compileProject = (project: tsc.Project) => {
+    const compile = pipeTo(project());
+    const {js, dts} = compile([project.src()]);
+    return writeTo(project.config.compilerOptions.outDir)([js, dts]);
+};
 
 // ------
 // Tasks
@@ -114,20 +133,19 @@ gulp.task('clean', () =>
 );
 
 /**
- * Transpile the Typescript project components.
+ * Build the service workers
  */
-gulp.task('compile', () =>
-    (
-        (...src: NodeJS.ReadableStream[]) => {
-            const compile = pipeTo(tsProject());
-            const {js, dts} = compile(src);
-            return writeTo(paths.build)([js, dts]);
-         }
-    )
-    (
-        tsProject.src()
-    )
-);
+gulp.task('compile:sw', () => compileProject(serviceWorkers));
+
+/**
+ * Build the main front-end.
+ */
+gulp.task('compile:app', () => compileProject(app));
+
+/**
+ * Build the content proofing tools.
+ */
+gulp.task('compile:tools', () => compileProject(analysers));
 
 /**
  * Collect all the assets need for the public site.

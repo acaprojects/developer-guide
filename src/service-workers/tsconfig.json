@@ -1,11 +1,9 @@
 {
   "compilerOptions": {
-    "outDir": "lib",
-    "baseUrl": "src",
-    "typeRoots": ["node_modules/@types"],
-    "target": "ES5",
+    "outDir": "../../lib/service-workers",
+    "target": "ES6",
     "module": "CommonJS",
-    "lib": ["ES6", "DOM", "WebWorker"],
+    "lib": ["ES6", "WebWorker"],
     "declaration": true,
     "moduleResolution": "Node",
     "sourceMap": true,
@@ -17,10 +15,9 @@
     "noUnusedParameters": true
   },
   "include": [
-    "src/**/*.ts"
+    "**/*.ts"
   ],
   "exclude": [
-    "node_modules",
-    "**/*.spec.ts"
+    "node_modules"
   ]
 }
