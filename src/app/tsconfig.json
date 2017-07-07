@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "../../lib/app",
+    "outDir": "../../lib/app/",
     "target": "ES6",
     "module": "CommonJS",
     "declaration": true,

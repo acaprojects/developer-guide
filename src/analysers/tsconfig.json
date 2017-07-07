@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "../../lib/analysers",
+    "outDir": "../../lib/analysers/",
     "target": "ES6",
     "module": "CommonJS",
     "declaration": true,

@@ -148,9 +148,9 @@ gulp.task('compile:app', () => compileProject(app));
 gulp.task('compile:tools', () => compileProject(analysers));
 
 /**
- * Collect all the assets need for the public site.
+ * Collect the static assets for the public site.
  */
-gulp.task('package', () =>
+gulp.task('package:static', () =>
     (
         (...globs: string[]) => {
             const site = gulp.src(globs);
@@ -161,20 +161,53 @@ gulp.task('package', () =>
         `${paths.src}app/*.html`,
         `${paths.src}app/*.ico`,
         `${paths.src}app/coverpage*`,
-        `${paths.build}/app/*.js`,
         `${paths.content}**/*.*`
     )
 );
 
+/**
+ * Prep the service workers for use in-browser.
+ */
+gulp.task('package:sw', () =>
+    (
+        (...globs: string[]) => {
+            const site = gulp.src(globs);
+            return writeTo(paths.public)([site]);
+        }
+    )
+    (
+        `${serviceWorkers.config.compilerOptions.outDir}*.js`,
+    )
+);
+
+/**
+ * Rollup the app front-end.
+ */
+gulp.task('package:app', () =>
+    (
+        (...globs: string[]) => {
+            const site = gulp.src(globs);
+            return writeTo(paths.public)([site]);
+        }
+    )
+    (
+        `${app.config.compilerOptions.outDir}*.js`,
+    )
+);
+
+/**
+ * Perform a complete project build.
+ */
 gulp.task('build', () =>
     (
         (...tasks: Array<string | string[]>) => runSequence(...tasks)
     )
     (
         ['lint', 'clean'],
-        'compile',
+        'compile:tools',
         'proof',
-        'package',
+        ['compile:app', 'compile:sw'],
+        ['package:static', 'package:sw', 'package:app'],
     )
 );
 
