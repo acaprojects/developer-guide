@@ -3,7 +3,8 @@ import * as tsc from 'gulp-typescript';
 import * as message from 'gulp-message';
 import tslint from 'gulp-tslint';
 import { exec } from 'child_process';
-import { join } from 'path';
+import { join, basename } from 'path';
+import { rollup } from 'rollup';
 import * as runSequence from 'run-sequence';
 import * as del from 'del';
 import * as merge2 from 'merge2';
@@ -69,7 +70,7 @@ const pipeTo = <T extends NodeJS.ReadWriteStream, U extends NodeJS.ReadableStrea
 const writeTo = R.compose(pipeTo, (folder: string) => gulp.dest(folder));
 
 /**
- *  Compile a TSC project.
+ *  Compile a TypeScript project.
  *
  * :: Project -> ReadWriteStream
  */
@@ -78,6 +79,20 @@ const compileProject = (project: tsc.Project) => {
     const {js, dts} = compile([project.src()]);
     return writeTo(project.config.compilerOptions.outDir)([js, dts]);
 };
+
+/**
+ * Bundle an ES6 module graph for use in browser.
+ */
+const bundle = (entry: string, src = paths.build, dest = paths.public) =>
+    rollup({
+        entry: join(src, entry),
+    })
+    .then(b =>
+        b.write({
+            dest: join(dest, basename(entry)),
+            format: 'iife'
+        })
+    );
 
 // ------
 // Tasks
@@ -168,32 +183,12 @@ gulp.task('package:static', () =>
 /**
  * Prep the service workers for use in-browser.
  */
-gulp.task('package:sw', () =>
-    (
-        (...globs: string[]) => {
-            const site = gulp.src(globs);
-            return writeTo(paths.public)([site]);
-        }
-    )
-    (
-        `${serviceWorkers.config.compilerOptions.outDir}*.js`,
-    )
-);
+gulp.task('package:sw', () => bundle('service-workers/doc-cache.js'));
 
 /**
  * Rollup the app front-end.
  */
-gulp.task('package:app', () =>
-    (
-        (...globs: string[]) => {
-            const site = gulp.src(globs);
-            return writeTo(paths.public)([site]);
-        }
-    )
-    (
-        `${app.config.compilerOptions.outDir}*.js`,
-    )
-);
+gulp.task('package:app', () => bundle('app/docsify-conf.js'));
 
 /**
  * Perform a complete project build.
