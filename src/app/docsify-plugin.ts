@@ -19,17 +19,17 @@ export interface Hook {
     /**
      * Invoked each time after the data is fully loaded.
      */
-    doneEach(handler: () => void);
+    doneEach(handler: () => void): void;
 
     /**
      * Called after initial completion. Only trigger once.
      */
-    mounted(handler: () => void);
+    mounted(handler: () => void): void;
 
     /**
      * Called after initial load.
      */
-    ready(handler: () => void);
+    ready(handler: () => void): void;
 }
 
 export type Plugin = (hook: Hook) => void;
