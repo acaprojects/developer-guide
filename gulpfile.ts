@@ -1,9 +1,11 @@
 import * as gulp from 'gulp';
 import * as tsc from 'gulp-typescript';
 import * as message from 'gulp-message';
+import * as changed from 'gulp-changed-in-place';
+import * as tap from 'gulp-tap';
 import tslint from 'gulp-tslint';
 import { exec } from 'child_process';
-import { join, basename } from 'path';
+import { join, basename, relative } from 'path';
 import { rollup } from 'rollup';
 import * as babel from 'rollup-plugin-babel';
 import * as uglify from 'rollup-plugin-uglify';
@@ -102,7 +104,10 @@ const shellProcess = (command: string) => (args: string[] = []) =>
  * proofing summary and either resolves or rejects based on the proofing
  * outcome.
  */
-const proof = shellProcess('node node_modules/markdown-proofing/cli.js --color');
+const proof = R.compose<string[], string[], Promise<string>>(
+    shellProcess('node node_modules/markdown-proofing/cli.js'),
+    R.append('--color')
+);
 
 /**
  * Bundle an ES6 module graph for use in browser.
@@ -146,7 +151,7 @@ gulp.task('lint', () =>
 /**
  * Run the proofing tools over all the docs.
  */
-gulp.task('proof', () =>
+gulp.task('proof:all', () =>
     (
         (...globs: string[]) =>
             proof(globs)
@@ -155,6 +160,36 @@ gulp.task('proof', () =>
                     message.error(summary);
                     throw new Error('content does not meet readability / proofing requirements');
                 })
+    )
+    (
+        `${paths.content}**/*.md`,
+        '*.md'
+    )
+);
+
+/**
+ * Watch doc content for changed and run the proofing tools on save.
+ */
+gulp.task('proof:onsave', () =>
+    (
+        (...globs: string[]) => {
+            message.info('Watching content for updates');
+
+            const relativePath = file => relative(__dirname, file.path);
+
+            const proofFile = R.compose(proof, R.of, relativePath);
+
+            const proofStream = (cb: (summary: string) => void) =>
+                tap(f => proofFile(f).then(cb).catch(cb));
+
+            const proofChanged = (src: string[]) =>
+                gulp.src(src)
+                    .pipe(changed())
+                    .pipe(proofStream(message.info));
+
+            proofChanged(globs);
+            return gulp.watch(globs, {}, () => proofChanged(globs));
+        }
     )
     (
         `${paths.content}**/*.md`,
