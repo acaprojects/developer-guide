@@ -19,6 +19,7 @@ const paths = {
     src: 'src/',
     build: 'lib/',
     content: 'docs/',
+    cover: 'coverpage/',
     public: 'dist/'    // packaged assets ready for deploy
 };
 
@@ -29,7 +30,6 @@ const tsProject = R.compose<string, string, tsc.Project>(tsc.createProject, tsCo
 
 // This project is composed of a few discrete TS components due to the need to
 // use different libraries / compile targets.
-const app = tsProject('app');
 const serviceWorkers = tsProject('service-workers');
 const analysers = tsProject('analysers');
 
@@ -96,11 +96,7 @@ const bundle = (entry: string, src = paths.build, dest = paths.public) =>
     .then(b =>
         b.write({
             dest: join(dest, basename(entry)),
-            format: 'iife',
-
-            // FIXME this is a nasty hack to get around tsc outputting
-            // Object.defineProperty(exports, "__esModule", { value: true });
-            intro: `if (typeof exports === 'undefined') var exports = {}`
+            format: 'iife'
         })
     );
 
@@ -163,11 +159,6 @@ gulp.task('clean', () =>
 gulp.task('compile:sw', () => compileProject(serviceWorkers));
 
 /**
- * Build the main front-end.
- */
-gulp.task('compile:app', () => compileProject(app));
-
-/**
  * Build the content proofing tools.
  */
 gulp.task('compile:tools', () => compileProject(analysers));
@@ -178,14 +169,14 @@ gulp.task('compile:tools', () => compileProject(analysers));
 gulp.task('package:static', () =>
     (
         (...globs: string[]) => {
-            const site = gulp.src(globs);
+            const site = gulp.src(globs, { base: '.' });
             return writeTo(paths.public)([site]);
         }
     )
     (
-        `${paths.src}app/*.html`,
-        `${paths.src}app/*.ico`,
-        `${paths.src}app/coverpage*`,
+        '*.html',
+        '*.ico',
+        `${paths.cover}**/*.*`,
         `${paths.content}**/*.*`
     )
 );
@@ -193,12 +184,12 @@ gulp.task('package:static', () =>
 /**
  * Prep the service workers for use in-browser.
  */
-gulp.task('package:sw', () => bundle('service-workers/doc-cache.js'));
+gulp.task('package:config', () => bundle('docsify-conf.js', './'));
 
 /**
- * Rollup the app front-end.
+ * Prep the service workers for use in-browser.
  */
-gulp.task('package:app', () => bundle('app/docsify-conf.js'));
+gulp.task('package:sw', () => bundle('service-workers/doc-cache.js'));
 
 /**
  * Perform a complete project build.
@@ -211,8 +202,8 @@ gulp.task('build', () =>
         ['lint', 'clean'],
         'compile:tools',
         'proof',
-        ['compile:app', 'compile:sw'],
-        ['package:static', 'package:sw', 'package:app'],
+        'compile:sw',
+        ['package:static', 'package:config', 'package:sw'],
     )
 );
 
