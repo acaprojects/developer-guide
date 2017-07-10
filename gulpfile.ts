@@ -9,6 +9,7 @@ import { join, basename, relative } from 'path';
 import { rollup } from 'rollup';
 import * as babel from 'rollup-plugin-babel';
 import * as uglify from 'rollup-plugin-uglify';
+import { serve } from 'docsify-cli/lib';
 import * as runSequence from 'run-sequence';
 import * as del from 'del';
 import * as merge2 from 'merge2';
@@ -248,8 +249,12 @@ gulp.task('package:config', () => bundle('docsify-conf.js', './'));
  */
 gulp.task('package:sw', () => bundle('service-workers/doc-cache.js'));
 
+gulp.task('serve:dev', () => serve('.', true, 3000));
+
+gulp.task('serve:prod', () => serve(paths.public, true, 3000));
+
 /**
- * Perform a complete project build.
+ * Perform a complete project build and package ready for deploy
  */
 gulp.task('build', () =>
     (
