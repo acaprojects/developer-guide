@@ -266,7 +266,7 @@ gulp.task('build', () =>
     (
         ['lint', 'clean'],
         'compile:tools',
-        'proof',
+        'proof:all',
         'compile:sw',
         ['package:static', 'package:config', 'package:sw'],
     )
