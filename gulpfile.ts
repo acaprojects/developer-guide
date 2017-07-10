@@ -129,7 +129,7 @@ const bundle = (entry: string, src = paths.build, dest = paths.public) =>
     );
 
 // ------
-// Tasks
+// Base Tasks
 
 /**
  * Lint all project Typescript source.
@@ -253,6 +253,9 @@ gulp.task('serve:dev', () => serve('.', true, 3000));
 
 gulp.task('serve:prod', () => serve(paths.public, true, 3000));
 
+// ------
+// Composite Tasks
+
 /**
  * Perform a complete project build and package ready for deploy
  */
@@ -269,11 +272,38 @@ gulp.task('build', () =>
     )
 );
 
+/**
+ * Run project tests
+ */
+gulp.task('test', () =>
+    (
+        (...tasks: Array<string | string[]>) => runSequence(...tasks)
+    )
+    (
+        ['lint', 'clean'],
+        'compile:tools',
+        'proof:all'
+    )
+);
+
+/**
+ * Launch the docs with live reload and proof read all content on save.
+ */
+gulp.task('write', () =>
+    (
+        (...tasks: Array<string | string[]>) => runSequence(...tasks)
+    )
+    (
+        ['compile:tools', 'serve:dev'],
+        'proof:onsave'
+    )
+);
+
 gulp.task('default', () =>
     (
         (...tasks: Array<string | string[]>) => runSequence(...tasks)
     )
     (
-        'build'
+        'write'
     )
 );
