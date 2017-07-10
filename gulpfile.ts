@@ -5,6 +5,8 @@ import tslint from 'gulp-tslint';
 import { exec } from 'child_process';
 import { join, basename } from 'path';
 import { rollup } from 'rollup';
+import * as babel from 'rollup-plugin-babel';
+import * as uglify from 'rollup-plugin-uglify';
 import * as runSequence from 'run-sequence';
 import * as del from 'del';
 import * as merge2 from 'merge2';
@@ -86,6 +88,10 @@ const compileProject = (project: tsc.Project) => {
 const bundle = (entry: string, src = paths.build, dest = paths.public) =>
     rollup({
         entry: join(src, entry),
+        plugins: [
+            babel({ exclude: 'node_modules/**' }),
+            uglify()
+        ]
     })
     .then(b =>
         b.write({
