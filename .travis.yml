@@ -2,3 +2,14 @@ language: node_js
 
 node_js:
 - node
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN # Set in travis-ci.org dashboard
+  on:
+    branch: master
+  local_dir: dist
+  fqdn: developer.acaprojects.com
+  email: developer@acaprojects.com
+  name: ACA Doc Bot
