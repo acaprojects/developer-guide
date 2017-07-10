@@ -83,6 +83,28 @@ const compileProject = (project: tsc.Project) => {
 };
 
 /**
+ * Execute a shell process. When supplied with a command and the arguments a
+ * promise will be return containing the contents of stdout. The promise will
+ * either resolve or reject based on the process exit condition.
+ *
+ * :: string -> [string] -> Promise string
+ */
+const shellProcess = (command: string) => (args: string[] = []) =>
+    new Promise<string>((resolve, reject) =>
+        exec(
+            `${command} ${args.join(' ')}`,
+            (err, stdout) => (err ? reject : resolve)(stdout)
+        )
+    );
+
+/**
+ * Proofread a set of markdown files. Returns a promise that always contains the
+ * proofing summary and either resolves or rejects based on the proofing
+ * outcome.
+ */
+const proof = shellProcess('node node_modules/markdown-proofing/cli.js --color');
+
+/**
  * Bundle an ES6 module graph for use in browser.
  */
 const bundle = (entry: string, src = paths.build, dest = paths.public) =>
@@ -122,17 +144,17 @@ gulp.task('lint', () =>
 );
 
 /**
- * Run the proofing tools over doc contents.
+ * Run the proofing tools over all the docs.
  */
-gulp.task('proof', cb =>
+gulp.task('proof', () =>
     (
         (...globs: string[]) =>
-            exec(`node node_modules/markdown-proofing/cli.js ${globs.join(' ')} --color`,
-                (err, stdout) => {
-                    message.info(stdout);
-                    cb(err);
-                }
-            )
+            proof(globs)
+                .then(message.info)
+                .catch(summary => {
+                    message.error(summary);
+                    throw new Error('content does not meet readability / proofing requirements');
+                })
     )
     (
         `${paths.content}**/*.md`,
