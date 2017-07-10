@@ -35,8 +35,5 @@
     "ts-node": "^3.1.0",
     "tslint": "^5.4.3",
     "typescript": "^2.4.1"
-  },
-  "dependencies": {
-    "docsify": "^4.1.14"
   }
 }
