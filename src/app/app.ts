@@ -1,3 +1,12 @@
-import { docsifyConfig } from './docsify-conf';
+// Setup docsify for client side md rendering
+import './docsify-conf';
+import 'docsify';
+import 'docsify/plugins/search';
 
-(window as any).$docsify = docsifyConfig;
+// Prism for readable code snippets
+
+
+
+if (typeof navigator.serviceWorker !== 'undefined') {
+    navigator.serviceWorker.register('doc-cache.js');
+}
