@@ -1,16 +1,22 @@
 {
   "compilerOptions": {
-    "target": "ES6",
-    "lib": ["ES6", "ScriptHost"],
-    "module": "CommonJS",
+    "outDir": "../../lib/app/",
+    "target": "ES5",
+    "module": "ES2015",
     "declaration": true,
     "moduleResolution": "Node",
+    "sourceMap": true,
     "removeComments": true,
     "strict": true,
-    "noImplicitAny": false,
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true
-  }
+  },
+  "include": [
+    "**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

@@ -7,8 +7,9 @@ import tslint from 'gulp-tslint';
 import { exec } from 'child_process';
 import { join, basename, relative } from 'path';
 import { rollup } from 'rollup';
-import * as babel from 'rollup-plugin-babel';
-import * as uglify from 'rollup-plugin-uglify';
+import * as rollupResolve from 'rollup-plugin-node-resolve';
+import * as rollupBabel from 'rollup-plugin-babel';
+import * as rollupUglify from 'rollup-plugin-uglify';
 import { serve } from 'docsify-cli/lib';
 import * as runSequence from 'run-sequence';
 import * as del from 'del';
@@ -22,7 +23,6 @@ const paths = {
     src: 'src/',
     build: 'lib/',
     content: 'docs/',
-    cover: 'coverpage/',
     public: 'dist/'    // packaged assets ready for deploy
 };
 
@@ -33,6 +33,7 @@ const tsProject = R.compose<string, string, tsc.Project>(tsc.createProject, tsCo
 
 // This project is composed of a few discrete TS components due to the need to
 // use different libraries / compile targets.
+const app = tsProject('app');
 const serviceWorkers = tsProject('service-workers');
 const analysers = tsProject('analysers');
 
@@ -117,8 +118,9 @@ const bundle = (entry: string, src = paths.build, dest = paths.public) =>
     rollup({
         entry: join(src, entry),
         plugins: [
-            babel({ exclude: 'node_modules/**' }),
-            uglify()
+            rollupResolve(),
+            rollupBabel({ exclude: 'node_modules/**' }),
+            rollupUglify()
         ]
     })
     .then(b =>
@@ -152,7 +154,7 @@ gulp.task('lint', () =>
 /**
  * Run the proofing tools over all the docs.
  */
-gulp.task('proof:all', () =>
+gulp.task('proof', () =>
     (
         (...globs: string[]) =>
             proof(globs)
@@ -161,36 +163,6 @@ gulp.task('proof:all', () =>
                     message.error(summary);
                     throw new Error('content does not meet readability / proofing requirements');
                 })
-    )
-    (
-        `${paths.content}**/*.md`,
-        '*.md'
-    )
-);
-
-/**
- * Watch doc content for changed and run the proofing tools on save.
- */
-gulp.task('proof:onsave', () =>
-    (
-        (...globs: string[]) => {
-            message.info('Watching content for updates');
-
-            const relativePath = file => relative(__dirname, file.path);
-
-            const proofFile = R.compose(proof, R.of, relativePath);
-
-            const proofStream = (cb: (summary: string) => void) =>
-                tap(f => proofFile(f).then(cb).catch(cb));
-
-            const proofChanged = (src: string[]) =>
-                gulp.src(src)
-                    .pipe(changed())
-                    .pipe(proofStream(message.info));
-
-            proofChanged(globs);
-            return gulp.watch(globs, {}, () => proofChanged(globs));
-        }
     )
     (
         `${paths.content}**/*.md`,
@@ -212,6 +184,11 @@ gulp.task('clean', () =>
 );
 
 /**
+ * Build the site front-end.
+ */
+gulp.task('compile:app', () => compileProject(app));
+
+/**
  * Build the service workers
  */
 gulp.task('compile:sw', () => compileProject(serviceWorkers));
@@ -222,88 +199,108 @@ gulp.task('compile:sw', () => compileProject(serviceWorkers));
 gulp.task('compile:tools', () => compileProject(analysers));
 
 /**
+ * Prep the service workers for use in-browser.
+ */
+gulp.task('package:sw', () => bundle('service-workers/doc-cache.js'));
+
+/**
+ * Bundle the frontend js components.
+ */
+gulp.task('package:app', () => bundle('app/app.js'));
+
+/**
  * Collect the static assets for the public site.
  */
 gulp.task('package:static', () =>
     (
         (...globs: string[]) => {
-            const site = gulp.src(globs, { base: '.' });
+            const site = gulp.src(globs);
             return writeTo(paths.public)([site]);
         }
     )
     (
-        '*.html',
-        '*.ico',
-        `${paths.cover}**/*.*`,
+        `${paths.src}app/*.html`,
+        `${paths.src}app/*.ico`,
+        `${paths.src}app/coverpage*`,
         `${paths.content}**/*.*`
     )
 );
 
-/**
- * Prep the service workers for use in-browser.
- */
-gulp.task('package:config', () => bundle('docsify-conf.js', './'));
+gulp.task('serve', () => serve(paths.public, true, 3000));
 
 /**
- * Prep the service workers for use in-browser.
+ * Watch doc content for updates and reproof / push to public for viewing on
+ * save.
  */
-gulp.task('package:sw', () => bundle('service-workers/doc-cache.js'));
+gulp.task('watch:content', () =>
+    (
+        (...globs: string[]) => {
+            message.info('Watching content for updates');
 
-gulp.task('serve:dev', () => serve('.', true, 3000));
+            const relativePath = file => relative(__dirname, file.path);
 
-gulp.task('serve:prod', () => serve(paths.public, true, 3000));
+            const proofFile = R.compose(proof, R.of, relativePath);
+
+            const proofStream = (cb: (summary: string) => void) =>
+                tap(f => proofFile(f).then(cb).catch(cb));
+
+            const proofChanged = (src: string[]) =>
+                gulp.src(src)
+                    .pipe(changed())
+                    .pipe(proofStream(message.info))
+                    .pipe(gulp.dest(paths.public));
+
+            proofChanged(globs);
+            return gulp.watch(globs, {}, () => proofChanged(globs));
+        }
+    )
+    (
+        `${paths.content}**/*.md`,
+        '*.md'
+    )
+);
 
 // ------
 // Composite Tasks
 
+const sequence = (...tasks: Array<string | string[]>) => cb => runSequence(...tasks, cb);
+
 /**
  * Perform a complete project build and package ready for deploy
  */
-gulp.task('build', () =>
-    (
-        (...tasks: Array<string | string[]>) => runSequence(...tasks)
-    )
-    (
+gulp.task('build',
+    sequence(
         ['lint', 'clean'],
         'compile:tools',
-        'proof:all',
-        'compile:sw',
-        ['package:static', 'package:config', 'package:sw'],
+        'proof',
+        ['compile:sw', 'compile:app'],
+        ['package:static', 'package:app', 'package:sw'],
     )
 );
 
 /**
  * Run project tests
  */
-gulp.task('test', () =>
-    (
-        (...tasks: Array<string | string[]>) => runSequence(...tasks)
-    )
-    (
+gulp.task('test',
+    sequence(
         ['lint', 'clean'],
         'compile:tools',
-        'proof:all'
+        'proof'
     )
 );
 
 /**
  * Launch the docs with live reload and proof read all content on save.
  */
-gulp.task('write', () =>
-    (
-        (...tasks: Array<string | string[]>) => runSequence(...tasks)
-    )
-    (
-        ['compile:tools', 'serve:dev'],
-        'proof:onsave'
+gulp.task('write',
+    sequence(
+        'build',
+        ['serve', 'watch:content'],
     )
 );
 
-gulp.task('default', () =>
-    (
-        (...tasks: Array<string | string[]>) => runSequence(...tasks)
-    )
-    (
+gulp.task('default',
+    sequence(
         'write'
     )
 );
