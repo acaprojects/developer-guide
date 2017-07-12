@@ -8,19 +8,11 @@
     <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css">
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
 </head>
+
 <body>
     <div id="app">Loading...</div>
 </body>
-<script>
-if (typeof navigator.serviceWorker !== 'undefined') {
-    navigator.serviceWorker.register('doc-cache.js');
-}
-</script>
-<script src="docsify-conf.js"></script>
-<script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
-<script src="//unpkg.com/docsify/lib/plugins/search.min.js"></script>
-<script src="//unpkg.com/prismjs/components/prism-bash.min.js"></script>
-<script src="//unpkg.com/prismjs/components/prism-git.min.js"></script>
-<script src="//unpkg.com/prismjs/components/prism-ruby.min.js"></script>
+
+<script src="app.js"></script>
 <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/2376567.js"></script>
 </html>
