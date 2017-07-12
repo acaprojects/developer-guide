@@ -12,8 +12,7 @@ const CACHE_NAME = 'aca-docs';
 const WHITELIST = [
     sw.location.hostname,
     'fonts.gstatic.com',
-    'fonts.googleapis.com',
-    'unpkg.com'
+    'fonts.googleapis.com'
 ];
 
 const BLACKLIST = [
