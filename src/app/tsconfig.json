@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "../../lib/app/",
+    "outDir": "lib/app/",
     "target": "ES5",
     "module": "ES2015",
     "declaration": true,
