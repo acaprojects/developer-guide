@@ -27,7 +27,7 @@ const paths = {
 };
 
 const tsConfig = (project: string, basePath = paths.src) =>
-    join('./', basePath, project, 'tsconfig.json');
+    join('.', basePath, project, 'tsconfig.json');
 
 const tsProject = R.compose<string, string, tsc.Project>(tsc.createProject, tsConfig);
 
