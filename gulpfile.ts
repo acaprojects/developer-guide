@@ -114,10 +114,7 @@ const proof = (globs: string[]) =>
         R.append('--color')
     )(globs)
         .then(([stdout, _]) => stdout)
-        .catch(([stdout, stderr]) => {
-            message.error(stderr);
-            throw new Error(stdout);
-        });
+        .catch(stdio => { throw new Error(stdio.join('\n')); });
 
 /**
  * Bundle an ES6 module graph for use in browser.
