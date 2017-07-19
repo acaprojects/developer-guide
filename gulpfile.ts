@@ -88,16 +88,16 @@ const compileProject = (project: tsc.Project) => {
 
 /**
  * Execute a shell process. When supplied with a command and the arguments a
- * promise will be return containing the contents of stdout. The promise will
- * either resolve or reject based on the process exit condition.
+ * promise will be return tuple of [stdout, stderr]. The promise will either
+ * resolve or reject based on the process exit condition.
  *
- * :: string -> [string] -> Promise string
+ * :: string -> [string] -> Promise [string, string]
  */
 const shellProcess = (command: string) => (args: string[] = []) =>
-    new Promise<string>((resolve, reject) =>
+    new Promise<[string, string]>((resolve, reject) =>
         exec(
             `${command} ${args.join(' ')}`,
-            (err, stdout) => (err ? reject : resolve)(stdout)
+            (err, stdout, stderr) => (err ? reject : resolve)([stdout, stderr])
         )
     );
 
@@ -105,11 +105,19 @@ const shellProcess = (command: string) => (args: string[] = []) =>
  * Proofread a set of markdown files. Returns a promise that always contains the
  * proofing summary and either resolves or rejects based on the proofing
  * outcome.
+ *
+ * :: [string] -> Promise string
  */
-const proof = R.compose<string[], string[], Promise<string>>(
-    shellProcess('node node_modules/markdown-proofing/cli.js'),
-    R.append('--color')
-);
+const proof = (globs: string[]) =>
+    R.compose(
+        shellProcess('node node_modules/markdown-proofing/cli.js'),
+        R.append('--color')
+    )(globs)
+        .then(([stdout, _]) => stdout)
+        .catch(([stdout, stderr]) => {
+            message.error(stderr);
+            throw new Error(stdout);
+        });
 
 /**
  * Bundle an ES6 module graph for use in browser.
