@@ -170,7 +170,7 @@ gulp.task('proof', () =>
                 })
     )
     (
-        `${paths.content}**/!(*contents).md`,
+        `${paths.content}*/*.md`,
         '*.md'
     )
 );
