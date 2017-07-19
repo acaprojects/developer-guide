@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "../../lib/service-workers/",
+    "outDir": "lib/service-workers/",
     "target": "ES6",
     "module": "CommonJS",
     "lib": ["ES6", "WebWorker"],
