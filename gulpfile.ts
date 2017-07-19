@@ -165,7 +165,7 @@ gulp.task('proof', () =>
             proof(globs)
                 .then(message.info)
                 .catch(summary => {
-                    message.error(summary);
+                    message.info(summary);
                     throw new Error('content does not meet readability / proofing requirements');
                 })
     )
