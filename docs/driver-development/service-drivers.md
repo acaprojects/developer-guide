@@ -1,4 +1,6 @@
-Service modules interface with devices that communicate using the HTTP(S) protocol. Currently HTTP versions 1.0 and 1.1 are supported.
+# Writing Web Service Drivers
+
+Service drivers interface with devices that communicate using the HTTP(S) protocol. Currently HTTP versions 1.0 and 1.1 are supported.
 
 They are similar to [Device Drivers](driver-development/device-drivers.md) with two major differences:
 
