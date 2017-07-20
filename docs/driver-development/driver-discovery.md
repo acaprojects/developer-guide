@@ -1,3 +1,5 @@
+# Driver Discovery and Metadata
+
 Drivers the system can access are represented by database entries. To simplify the creation of these entries available drivers can be scanned for and made available as a searchable list.
 
 You can click scan from the backoffice UI or directly run `bundle exec rake discover:drivers`
