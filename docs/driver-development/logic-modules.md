@@ -1,13 +1,13 @@
-Logic modules define processes and can interface with drivers. They are tightly coupled with a system. (unlike device and service drivers, which can be in multiple systems)
+Logic modules define processes and can interface with drivers. They are coupled with a system, unlike device and service drivers, which can be in more than one system.
 
-They help seperate concerns. In [model - view - controller](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) terminology, Logic modules are controllers whereas devices and services are models.
+They help separate concerns. In [model - view - controller](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) terminology, Logic modules are controllers whereas devices and services are models.
 
-As such, they exist for the most part, to communicate with other drivers.
+As such, they exist primarily to communicate with other drivers.
 
 ## Inter-driver communication
 
-Engine guarantees that only a single thread will access driver code at any point in time.
-So communication between driver instances is proxied and scheduled to ensure serial access. Furthermore the driver in question might not even be running on the same server.
+ACAEngine guarantees that a single thread will access driver code at any point in time.
+Communication between driver instances is scheduled to ensure serial access. Furthermore the driver in question might not even be running on the same server.
 
 Because of this, all calls are asynchronous and always return a promise which allows you to access the return value of the function call or catch any errors that might have occurred (error catching is optional and the error will be logged).
 
@@ -23,20 +23,24 @@ i.e A system may be defined with some drivers as follows:
 | CBus Lights | Lights |  
 | GlobalCache Relays | Blinds |
 
-NOTE:: Devices are not aware of the systems they are in. Only logic modules have this information.
+NOTE:: Devices are not aware of the systems they are in, unlike logic modules.
 
-So to access the samsung display from the Room Logic you would perform the following: (Strings or Symbols can be used)
-* `system.get(:Display, 1)`
-* `system.get_implicit(:Display_1)`
-* `system[:Display]` (shortcut for the first index)
+To access the Samsung display from the Room Logic you would perform the following: (Strings or Symbols can be used)
+* `system[:Display_2]`
+* `system.get(:Display, 2)`
+* `system.get_implicit(:Display_2)`
 
-It is also possible to send a request to all modules of a type in a system. For instance turning off all the displays:
+When there is a single device of any any class, the index doesn't need to be defined
+* `system[:Lights]`
+* `system.get(:Lights)`
+
+It is possible to send a request to all modules of a type in a system. For instance turning off all the displays:
 
 ```ruby
 system.all(:Display).power Off
 ```
 
-To get the result of a request we use the returned [promise](http://documentup.com/kriskowal/q/)
+A [promise](http://documentup.com/kriskowal/q/) is returned to obtain the returned result 
 
 ```ruby
 system[:Display].firmware_version.then do |version|
@@ -44,12 +48,10 @@ system[:Display].firmware_version.then do |version|
 end
 ```
 
-Or using [futures](https://msdn.microsoft.com/en-us/library/ff963556.aspx) call `.value` or the `co` routine with a promise
+Or using [futures](https://msdn.microsoft.com/en-us/library/ff963556.aspx) call `.value` on a promise
 
 ```ruby
 response = system[:Display].firmware_version.value
-# OR
-response = co system[:Display].firmware_version
 ```
 
 If you want to communicate with a driver in another system you need to know the system id or system name of that system.
@@ -68,10 +70,11 @@ end
 
 This is only required for logic modules as the load order is:
 
+1. SSH modules
 1. Device modules
-2. Service modules
-3. Logic modules
-4. Triggers
+1. Service modules
+1. Logic modules
+1. Triggers
 
 
 ### Watching Status Variables

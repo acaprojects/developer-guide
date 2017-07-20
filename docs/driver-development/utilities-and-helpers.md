@@ -1,4 +1,4 @@
-Engine comes packaged with some handy helper functions that make interfacing with the wide variety of IoT protocols out there easier.
+ACAEngine comes packaged with some handy helper functions that make interfacing with the wide variety of IoT protocols out there easier.
 
 ## Functions and Constants
 
@@ -9,11 +9,11 @@ include ::Orchestrator::Constants
 ```
 | Helper | Type | Description |
 | :---         |     :---     |          :--- |
-| On, Down, Open | bool true | Constants that can make code more readable |
-| Off, Up, Close, Short | bool false | Constants that can make code more readable |
-| in_range(input_number, max, min = 0) | returns a number in the range | if input exceeds the limits, the limit is returned |
-| is_affirmative? value | returns true if value is affirmative | values such as: `true 'yes' :On`  |
-| is_negatory? value | returns true if value is negative | values such as: `false 'no' :Inactive`  |
+| `On, Down, Open` | true | Constants that can make code more readable |
+| `Off, Up, Close, Short` | false | Constants that can make code more readable |
+| `in_range(input_number, max, min = 0)` | returns a number in the range | if input exceeds the limits, the limit is returned |
+| `is_affirmative? value` | returns true if value is affirmative | values such as: `true 'yes' :On`  |
+| `is_negatory? value` | returns true if value is negative | values such as: `false 'no' :Inactive`  |
 
 The Constants include module also contains [[Configuration Helpers]]
 
@@ -24,10 +24,10 @@ include ::Orchestrator::Transcoder
 
 | Helper | Type | Description |
 | :---         |     :---     |          :--- |
-| hex_to_byte(data) | returns binary string | accepts any string containing hex characters and supports common formatting such as `"0xDEADBEEF"`, `"De:ad:Be:ef"` etc |
-| byte_to_hex(data) | returns an ascii string | accepts binary strings or arrays of bytes |
-| str_to_array(data) | returns an array of bytes | accepts strings |
-| array_to_str(data) | returns a binary string | accepts array of bytes |
+| `hex_to_byte(data)` | returns binary string | accepts any string containing hex characters and supports common formatting such as `"0xDEADBEEF"`, `"De:ad:Be:ef"` etc |
+| `byte_to_hex(data)` | returns an ASCII string | accepts binary strings or arrays of bytes |
+| `str_to_array(data)` | returns an array of bytes | accepts strings |
+| `array_to_str(data)` | returns a binary string | accepts array of bytes |
 
 
 ## Protocols
@@ -203,9 +203,9 @@ Handsoap.http_driver = :libuv
 ```
 
 
-### Wake on Lan
+### Wake on LAN
 
-Wake on lan is available to drivers of all types
+Wake on LAN is available to drivers of all types
 
 ```ruby
 # Supports any string with the correct number of hex digits
@@ -224,7 +224,7 @@ wake_device(mac_address_string, '192.168.3.1')
 
 ### CRC Checks
 
-[github project](https://github.com/dearblue/ruby-crc) and [supported crc checks](https://github.com/dearblue/ruby-crc/blob/master/lib/crc/_modules.rb)
+[github project](https://github.com/dearblue/ruby-crc) and [supported CRC checks](https://github.com/dearblue/ruby-crc/blob/master/lib/crc/_modules.rb)
 
 * `gem install crc`
 

@@ -62,15 +62,15 @@ end
 
 | Option | Verbs | Example | Effect |
 | :--- | :--- | :--- | :--- |
-| query | All | `query: "me=bob&other=rain"` === `query: {me: :bob, other: :rain}` | uri**?me=bob&other=rain** |
-| body | Put, Post | `body: "data=hello&other=world"` === `body: {data: :hello, other: :world}` | when body is a string it will be sent as is. When a hash, it will be form encoded. |
-| headers | All | `headers: {Name: 'value'}` | Some headers are transformed further. See bellow |
-| file | Put, Post | `file: 'path/to/file.ext'` | Will send the file as the body |
-| keepalive | All | `keepalive: false` | Will close the connection once the request has completed |
-| ntlm | All | `ntlm: {user: 'u', password: 'p', domain: 'd'}` | Will perform a request with an endpoint that requires NTLM auth |
-| digest | All | `digest: {user: 'u', password: 'p', domain: 'd'}` | Will perform a request with an endpoint that requires digest auth |
+| `query` | All | `query: "me=bob&other=rain"` === `query: {me: :bob, other: :rain}` | URI**?me=bob&other=rain** |
+| `body` | Put, Post | `body: "data=hello&other=world"` === `body: {data: :hello, other: :world}` | when body is a string it will be sent as is. When a hash, it will be form encoded. |
+| `headers` | All | `headers: {Name: 'value'}` | Some headers are transformed further. See bellow |
+| `file` | Put, Post | `file: 'path/to/file.ext'` | Will send the file as the body |
+| `keepalive` | All | `keepalive: false` | Will close the connection once the request has completed |
+| `ntlm` | All | `ntlm: {user: 'u', password: 'p', domain: 'd'}` | Will perform a request with an endpoint that requires NTLM auth |
+| `digest` | All | `digest: {user: 'u', password: 'p', domain: 'd'}` | Will perform a request with an endpoint that requires digest auth |
 
-NOTE:: Both NTLM and Digest auth are challenge response protocols and won't work with HTTP1.0 or keepalive false
+NOTE:: Both NTLM and Digest auth are challenge response protocols and won't work with HTTP 1.0 or keep alive false
 
 ### Basic Authentication
 

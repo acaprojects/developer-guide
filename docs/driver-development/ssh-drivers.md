@@ -1,4 +1,4 @@
-SSH modules interface with devices or servers that communicate using the SSH 1.99/2.0 protocol. SSH 1.x is considered obsolete due to inherent security flaws and not supported.
+SSH modules interface with devices or servers that communicate using the SSH 1.99/2.0 protocol. SSH 1 is considered obsolete due to inherent security flaws and not supported.
 
 SSH modules are similar to [Device Drivers](driver-development/device-drivers.md) with an additional `exec` function, where supported by the remote. Unfortunately most AV devices seem to only support interactive shell, which is akin to telnet.
 
@@ -81,12 +81,12 @@ status.value # => {exit_code: 137, exit_signal: 9}
 
 | Option | Default Value | Description |
 | :--- | :--- | :--- |
-| wait | true | do we want to wait for a response before we continue processing |
-| delay | 0  | minimum delay time between sends (milliseconds) |
-| delay_on_receive | 0 | time to delay the next transmit after receiving data (milliseconds) |
-| retries | 2 | number of times we'll retry a command if it has timed out |
-| timeout | 5000 | amount of time we'll wait for a response to a command before retrying (milliseconds) |
-| priority | 50 | so we can perform commands in preference to others |
+| `wait` | true | do we want to wait for a response before we continue processing |
+| `delay` | 0  | minimum delay time between sends (milliseconds) |
+| `delay_on_receive` | 0 | time to delay the next transmit after receiving data (milliseconds) |
+| `retries` | 2 | number of times we'll retry a command if it has timed out |
+| `timeout` | 5000 | amount of time we'll wait for a response to a command before retrying (milliseconds) |
+| `priority` | 50 | so we can perform commands in preference to others |
 
 
 
