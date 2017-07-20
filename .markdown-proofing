@@ -46,6 +46,6 @@
     "aca-branding-error": "error",
     "aca-branding-warning": "warning",
 
-    "disallowed-phrases": "error"
+    "disallowed-phrases": "warning"
   }
 }
