@@ -4,7 +4,7 @@ const rules: RegExpAnalyserRule[] = [
     ['disallowed-phrases', [
         [
             // Check for mentions of competitors.
-            /\b(AMX)|(Crestron)|(Extron)\b/gi,
+            /\b(AMX)|(Crestron)\b/gi,
             `don't be a dick and talk down competitors - they build nice things too`
         ]
     ]],
