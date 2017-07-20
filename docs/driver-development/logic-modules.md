@@ -1,3 +1,5 @@
+# Writing Logic Modules
+
 Logic modules define processes and can interface with drivers. They are coupled with a system, unlike device and service drivers, which can be in more than one system.
 
 They help separate concerns. In [model - view - controller](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) terminology, Logic modules are controllers whereas devices and services are models.
@@ -9,7 +11,7 @@ As such, they exist primarily to communicate with other drivers.
 ACAEngine guarantees that a single thread will access driver code at any point in time.
 Communication between driver instances is scheduled to ensure serial access. Furthermore the driver in question might not even be running on the same server.
 
-Because of this, all calls are asynchronous and always return a promise which allows you to access the return value of the function call or catch any errors that might have occurred (error catching is optional and the error will be logged).
+Because of this, all calls are asynchronous and always return a promise which allows you to access the return value of the function call or catch any errors that might have occurred. Error catching is optional and the error will be logged.
 
 Driver instances are grouped by Systems that provide metadata on how to access the driver instances.
 

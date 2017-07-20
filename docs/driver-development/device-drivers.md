@@ -1,4 +1,4 @@
-# Device Driver Development
+# Writing Device Drivers
 
 Device drivers implement a protocol on a raw transport stream, TCP or UDP.
 For examples see our [open repository of device modules](https://github.com/acaprojects/aca-device-modules)
