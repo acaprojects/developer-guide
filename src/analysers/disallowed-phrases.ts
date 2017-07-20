@@ -3,8 +3,8 @@ import { RegExpAnalyserRule, RegExpAnalyser } from './tools/regexp-analyser';
 const rules: RegExpAnalyserRule[] = [
     ['disallowed-phrases', [
         [
-            // Check for mentions of competitors.
-            /\b(AMX)|(Crestron)\b/gi,
+            // Check for mentions of competitors in text outside of links.
+            /(\b(AMX)|(Crestron)|(Extron)\b)(?![^\[]*\]\([^\(]*\))/gi,
             `don't be a dick and talk down competitors - they build nice things too`
         ]
     ]],
