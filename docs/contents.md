@@ -11,7 +11,7 @@
     + [Utilities and Helpers](driver-development/utilities-and-helpers.md)
 - Additional Driver Development
     + [SSH Drivers](driver-development/ssh-drivers.md)
-    + [Service Drivers](driver-development/service-drivers.md)
+    + [Web Service Drivers](driver-development/service-drivers.md)
     + [Logic Modules](driver-development/logic-modules.md)
 - User Interfaces
 - System Administration
