@@ -17,11 +17,6 @@ For example usage, see:
 
 We use [rspec-expectations](https://github.com/rspec/rspec-expectations) for verifying status variables and command results returned expected values.
 
-## Running Tests
-
-There is a rake task where you can specify the file containing the driver spec. Drivers themselves are resolved and loaded internally, as they would be in a running system.
-
-`rake module:test['../aca-device-modules/modules/extron/switcher/dxp_spec.rb']`
 
 ## Helper Functions
 
@@ -51,3 +46,21 @@ Byebug Resources:
 
 * [Usage Tutorial](https://www.sitepoint.com/the-ins-and-outs-of-debugging-ruby-with-byebug/)
 * [Video Tutorial](https://www.youtube.com/watch?v=toZrovVX4ug)
+
+
+## Running Tests
+
+There is a rake task where you can specify the file containing the driver spec. Drivers themselves are resolved and loaded internally, as they would be in a running system.
+
+* `rake module:test['../aca-device-modules/modules/extron/switcher/dxp_spec.rb']`
+
+To simplify the process of running tests, when using the [development setup](https://github.com/acaprojects/setup-dev), you can run tests in the browser.
+
+* Your system is scanned and spec files are listed on the right
+* Selecting a spec will attempt to load the driver file
+  * You will see any load errors that occured (such as syntax errors)
+  * Discovery information is listed in a table
+  * The test is executed in an interactive console, allowing for interactive debugging
+  * Click the refresh icon to re-run the test at any point
+
+![Testing and Debugging](https://user-images.githubusercontent.com/368013/28649530-e6ecf98c-72b8-11e7-86d8-1977aef69007.png)
