@@ -9,7 +9,7 @@ The `logger` is automatically mixed into all driver classes and has the usual lo
 * `error`: something went wrong, definitely worth investigation
 * `fatal`: something that should never go wrong, went wrong. Requires immediate investigation / resolution
 
-If text being passed to the logger requires some string manipulation or other processor intensive operation, it is probably worth performing this work in a [block](http://www.eriktrautman.com/posts/ruby-explained-blocks-procs-and-lambdas-aka-closures) in case the result is not needed - this is often the case with debug statements as they are often discarded.
+If text being passed to the logger requires some string manipulation or other processor intensive operation, it is worth performing this work in a [block](http://www.eriktrautman.com/posts/ruby-explained-blocks-procs-and-lambdas-aka-closures) in case the result is not recorded - this is preferred with debug statements as they are discarded when nobody is watching.
 
 ```ruby
     def received(data, resolve, command)
@@ -33,7 +33,7 @@ end
 
 ## Security
 
-Authentication is mandatory and authenticated users have access to all systems and drivers within. They can't edit or see settings, can't list systems or change anything however they can, by default, access all functions defined in drivers if they know the system id. This is mostly via the websocket API, most restful API's are out of bounds to a regular user.
+Authentication is mandatory and authenticated users have access to all systems and drivers within. They can't edit or see settings, can't list systems or change anything however they can, by default, access all functions defined in drivers if they know the system id. This is via the websocket API, most restful API's are out of bounds to a regular user.
 
 A global callback can be defined to check if a user should be able to access a system:
 
@@ -91,7 +91,7 @@ can_access? :method_name
 can_access? :method_name, user
 ```
 
-NOTE:: the current user is maintained across asynchronous function calls.
+NOTE:: the current user is maintained across asynchronous function calls and timers.
 
 i.e. `Browser (user: Bob) -> LogicModule.do_something_weird -> Display.reset_to_factory_new`
 
