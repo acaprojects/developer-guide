@@ -58,7 +58,7 @@ To simplify the process of running tests, when using the [development setup](htt
 
 * Your system is scanned and spec files are listed on the right
 * Selecting a spec will attempt to load the driver file
-  * You will see any load errors that occured (such as syntax errors)
+  * You will see any load errors that occur (such as syntax errors)
   * Discovery information is listed in a table
   * The test is executed in an interactive console, allowing for interactive debugging
   * Click the refresh icon to re-run the test at any point
