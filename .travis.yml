@@ -16,6 +16,5 @@ deploy:
   on:
     branch: master
   local_dir: dist
-  fqdn: developer.acaprojects.com
   email: developer@acaprojects.com
   name: ACA Doc Bot
