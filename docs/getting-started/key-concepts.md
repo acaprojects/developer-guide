@@ -13,7 +13,7 @@ Associating systems with zones serves two purposes:
 ## Systems
 
 A *System* is a collection of devices, settings and user interfaces that allow ACAEngine to deliver a control experience to the user.
-Systems often represent individual physical spaces (such as a meeting room) but can also represent such things as a digital signage endpoint or a non-physical system with information based inputs and outputs. 
+Systems often represent individual physical spaces (such as a meeting room) but can also represent such things as a digital signage endpoint or a non-physical system with information based inputs and outputs.
 
 
 ## Settings
@@ -24,7 +24,7 @@ Settings defined for zones are inherited by all systems in that zone. Settings d
 
 Examples of settings that could be assigned to systems include: available video inputs/outputs and functions, input source names, their corresponding video matrix switcher input, DSP control block IDs, lighting control addresses, etc…
 
-Examples of settings that could be assigned to devices include: MAC addresses, device login credentials, limits, identifiers, flags, etc... 
+Examples of settings that could be assigned to devices include: MAC addresses, device login credentials, limits, identifiers, flags, etc...
 
 
 ## Drivers
@@ -48,3 +48,7 @@ Devices can be Started or Stopped. When Started, ACAEngine will attempt to conne
 ## Interfaces
 
 *Interfaces* are web pages that present the user with controls for the System. Interfaces developed for ACAEngine generally use [Angular](https://angular.io/) to bind front-end web page elements to back-end Logic functions and values. A System’s Logic will take the Settings defined for that system and use it to control (visual) elements on the interface. Interfaces are generally modular and usually connect to a one system at a time.
+
+---
+
+Now that you're familiar with the basics, let's [setup a development environment](getting-started/setup.md).
