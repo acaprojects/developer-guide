@@ -1,10 +1,3 @@
-/*
- * Based on @huxpro's sw.js (Copyright 2016 @huxpro)
- * Licensed under Apache 2.0.
- *
- * Service worker to locally caching doc contents for offline access.
- */
-
 const sw = self as ServiceWorkerGlobalScope;
 
 const CACHE_NAME = 'aca-docs';
@@ -65,14 +58,12 @@ sw.addEventListener('fetch', event => {
         const fetched = fetchAlways(event.request);
         const fetchedCopy = fetched.then(resp => resp.clone());
 
-        // Call respondWith() with whatever we get first.
-        // If the fetch fails (e.g disconnected), wait for the cache.
-        // If there’s nothing in cache, wait for the fetch.
-        // If neither yields a response, return offline pages.
+        // Call respondWith() with:
+        // 1. the fetched resource
+        // 2. a previously cached asset if the fetch failed (i.e. offline)
+        // 3. a rejected promise (offline and not cached)
         event.respondWith(
-            Promise.race([fetched.catch(() => cached), cached])
-                .then(resp => resp || fetched)
-                .catch(() => { /* eat any errors */ })
+            fetched.catch(() => cached || Promise.reject('offline'))
         );
 
         // Update the cache with the version we fetched (only for ok status)
@@ -83,7 +74,7 @@ sw.addEventListener('fetch', event => {
                         ? cache.put(event.request, response)
                         : undefined
                 )
-                .catch(() => { /* eat any errors */ })
+                .catch(() => { /* ignore fetch errors */ })
         );
     }
 });
