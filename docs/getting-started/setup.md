@@ -26,7 +26,7 @@ Open a terminal in the containing folder and run:
 vagrant up
 ```
 
-Your environment will provision and when it's ready to go you will be provided with a URL and authentication details to log in. Congratulations you're ready to go!
+You will see some updates while your environment provisions. This may take a couple of minutes the first time it runs. When it's complete you will be provided with a URL and authentication details to log in. Congratulations you're ready to go!
 
 When you're done working with ACAEngine use
 ```bash
@@ -43,4 +43,4 @@ Changes that you make, such as adding or removing devices, systems, or zones wil
 vagrant destroy
 ```
 
-The entire environment is stored within the `setup-dev` directory. You can move this between machines by copying the entire `setup-dev` folder. Or, to remove the ACAEngine development environment from your machine, delete it.
+The `setup-dev` directory contains the entire development environment. You can move this between machines by copying it. Similarly, to remove the ACAEngine development environment from your machine, delete it.
