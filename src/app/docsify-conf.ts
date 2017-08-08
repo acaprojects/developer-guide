@@ -17,7 +17,7 @@ const insertHairline: Plugin = docsifyReplace(/ACAEngine/gi, 'ACA&#8202;Engine')
     homepage: 'getting-started/overview.md',
     coverpage: 'coverpage.md',
     loadNavbar: false,
-    loadSidebar: 'contents.md',
+    loadSidebar: '../../contents.md',
     subMaxLevel: 2,
     auto2top: true,
     search: {
