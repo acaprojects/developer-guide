@@ -5,7 +5,7 @@ import { docsifyReplace } from './docsify-replace';
  * Plugin to auto-insert a hairline space in all instances of "ACAEngine" to
  * keep nice typography.
  */
-const insertHairline: Plugin = docsifyReplace(/ACAEngine/gi, 'ACA&#8202;Engine');
+const insertHairline: Plugin = docsifyReplace(/\bACAEngine\b/gi, 'ACA&#8202;Engine');
 
 /**
  * Site config to be picked up by docsify for rendering of site.
