@@ -15,11 +15,9 @@
     + [Logic Modules](driver-development/logic-modules.md)
 - User Interfaces
 - API's
-    + [Overview](api/overview.md)
     + [Authentication](api/authentication.md)
-    + Web API
-    + [Real-time API](api/ws/overview.md)
-    + Analytics API
+    + [Web API](api/rest.md)
+    + [Real-time API](api/ws.md)
 - System Administration
 - Deployment
     + Recommended Environments

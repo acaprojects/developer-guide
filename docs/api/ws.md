@@ -22,6 +22,8 @@ Commands form the basis for interacting with the real-time API. All commands tak
 
 Within each command, the following parameters are required.
 
+Parameter
+
  [:id, :cmd, :sys, :mod, :name]
 
 ### `exec`
