@@ -61,8 +61,9 @@ The options are as follows:
 | `retries` | 2 | number of times we'll retry a command if it has failed |
 | `timeout` | 5000 | amount of time we'll wait for a response to a command before retrying (milliseconds) |
 | `priority` | 50 | so we can perform commands in preference to others (see section on priorities) |
-| `force_disconnect` | false | causes the transport to disconnect once a response has been received 
+| `force_disconnect` | false | causes the transport to disconnect once a response has been received
 | `clear_queue` | nil/false | removes any other queued commands once it starts transmitting |
+| `name` | nil | command type (e.g. `:power`). Queued commands of the same time will be overridden. |
 | `emit` | nil | callback to occur when that request completes. Will not be called if another request with the same name overrides this request. |
 | `on_receive` | nil | alternative receive function or block. Called in stead of `received` function |
 
@@ -156,4 +157,3 @@ end
 # For make break connections, in milliseconds
 inactivity_timeout 5000
 ```
-
