@@ -2,9 +2,14 @@
 
 Drivers the system can access are represented by database entries. To simplify the creation of these entries available drivers can be scanned for and made available as a searchable list.
 
-You can click scan from the backoffice UI or directly run `bundle exec rake discover:drivers`
-
+You can click scan from the backoffice UI:
 ![image](https://cloud.githubusercontent.com/assets/368013/15009704/5d76706e-122b-11e6-8f8d-16fa3d39c85c.png)
+
+or when running the development environment trigger a scan directly with:
+
+```bash
+vagrant exec rake discover:drivers
+```
 
 Metadata used to describe the drivers, is defined as part of the driver. For Example:
 
