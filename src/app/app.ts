@@ -7,6 +7,8 @@ import 'docsify/lib/plugins/search';
 import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-git';
 import 'prismjs/components/prism-ruby';
+import 'prismjs/components/prism-json';
+import 'prismjs/components/prism-javascript';
 
 // Local cache in a service worker for offline access
 if (typeof navigator.serviceWorker !== 'undefined') {
