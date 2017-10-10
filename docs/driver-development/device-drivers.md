@@ -126,6 +126,9 @@ NOTE:: given default values, if you send commands in the received function and t
 
 ## Helper functions
 
+Helper functions interact with the local state of a driver. Defining a setting, for instance, will not overwrite any shared system state.
+
+
 | Name | Description |
 | :--- | :--- |
 | `disconnect` | disconnects the current connection. It does not wait to send any buffered data |
@@ -134,6 +137,7 @@ NOTE:: given default values, if you send commands in the received function and t
 | `defaults` (options hash) | allows you to set custom default options for commands |
 | `config` (options hash) | allows you to set custom processing configurations |
 | `set_connected_state` (true or false) | overrides the default connection indicator (useful for UDP devices) |
+| `define_setting` (:key, value) | persists a setting value in the database that impacts the current driver instance |
 
 
 For the various defaults and configuration options see the [command processor](https://github.com/acaprojects/ruby-engine/blob/master/lib/orchestrator/device/processor.rb).
@@ -147,10 +151,12 @@ wait_response false
 queue_priority default: 50, bonus: 20
 clear_queue_on_disconnect!
 flush_buffer_on_disconnect!
-before_transmit :run_function
 
+before_transmit :run_function
 def run_function(data, command)
-    # You can modify the data at the last min here (might be waiting in the queue for awhile)
+    # You can modify the data at the last minute here.
+    # A request in the queue might require an update before sending.
+    # Example: https://github.com/acaprojects/aca-device-modules/blob/master/modules/panasonic/projector/tcp.rb
     return data
 end
 
