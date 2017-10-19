@@ -14,6 +14,9 @@
     + [Web Service Drivers](driver-development/service-drivers.md)
     + [Logic Modules](driver-development/logic-modules.md)
 - User Interfaces
+    + [Quick Start](interface-development/quick-start.md)
+    + [The Client Library](interface-development/composer.md)
+    + [Interface Widgets](interface-development/widgets.md)
 - System Administration
 - Deployment
     + Recommended Environments
