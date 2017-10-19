@@ -3,9 +3,9 @@
 Building an interface for ACAEngine is the same as building any generic web application.
 We try to follow industry best practices and leverage the tools used by most developers in the industry.
 
-* NOTE:: Windows users, it is recommended that you install the [Linux subsystem for Windows](https://msdn.microsoft.com/en-au/commandline/wsl/install_guide).
+* NOTE:: Windows users are recommended to install the [Linux subsystem for Windows](https://msdn.microsoft.com/en-au/commandline/wsl/install_guide).
   * Tools such as git and your preferred text editor make sense to run on Win32
-  * Whilst both NodeJS and Ruby can run naitively on Windows they are much harder to manage and use effectively when compared to their linux counterparts.
+  * Whilst both NodeJS and Ruby can run natively on Windows they are much harder to manage and use effectively when compared to their Linux counterparts.
 
 
 ## What you will need
@@ -24,7 +24,7 @@ Please install the following applications as they are core requirements for inte
 
 ## Install some core tools
 
-Many of the tools and libraries that help with development are available via `npm` which is the [Node Package Manager](https://www.npmjs.com/).
+The tools and libraries that help with development are available via `npm` which is the [Node Package Manager](https://www.npmjs.com/).
 We recommend installing the following command line helpers
 
 * [Angular CLI](https://cli.angular.io/) `npm install -g @angular/cli`
@@ -33,8 +33,7 @@ We recommend installing the following command line helpers
 
 ## Running the Demo UI
 
-This is a project that can be cloned and run against the ACAEngine development environment.
-For those who want some instant gratification.
+This is a project that can run against the ACAEngine development environment, for those who want some instant gratification.
 
 1. Create a folder for storing your interface projects
 1. Open a command prompt at that location

@@ -11,7 +11,7 @@ It abstracts the complexity of the WebSocket API and manages the following:
 
 The magic of Angular is that it allows you to build a dynamic web page in a declarative manner.
 
-* NOTE:: for universal support between mouse and touch devices we use the [Hammer library](http://hammerjs.github.io/recognizer-press/) which has numerous action recognizers, such as pressing, swiping, pinching, etc.
+* NOTE:: for universal support between mouse and touch devices we use the [Hammer library](http://hammerjs.github.io/recognizer-press/) which has action recognizers, such as pressing, swiping, pinching, etc.
 
 
 ## Status Variable Bindings
@@ -24,7 +24,7 @@ Imagine the driver below running on ACAEngine.
 * Input can be changed on the device by calling `Display.switch_to(input_name)`
 
 You can request the status values available in drivers so you can present these graphically to a user.
-This is performed using the `binding` directive and the data requested is updated in realtime as the status changes.
+This is performed using the `binding` directive and the data requested is updated in real time as the status changes.
 
 ```html
 
@@ -43,7 +43,7 @@ Let's break this line down a little more.
 * `binding`: this tells Angular that we want to use the binding directive
 * `[sys]`: this is the system ID we want to connect to. The `[]` indicate that this is an input variable
 * `mod`: this is a raw string indicating the driver we would like to reference.
-  * by default the driver index is 1 so in the example we are referencing Display_1
+  * by default the driver index is 1 so in the example we are referencing `Display_1`
   * this could be more explicit: `mod="Display_1"`
   * or even more explicit `mod="Display" [index]="model.selected_index"`
 * `[(value)]`: this is the variable that will hold the status value requested
@@ -51,7 +51,7 @@ Let's break this line down a little more.
   * If the value is changed, by a user interacting with the interface, the function defined by `exec` will be called on the device module.
   * This is the primary method for updating state on the server / device
 * `exec` this is the function to run on the device module if the status value changes
-  * The function is called with the paramaters defined by `[params]`
+  * The function is called with the parameters defined by `[params]`
   * There are times where execute can be simplified.
 
 
@@ -86,7 +86,7 @@ This is an example of controlling volume and power for the same device.
 
 ```
 
-You can see that exec is present however no value is set.
+You can see that exec is present with no value configured.
 The result of this code is a power toggle button for the device and when the device is on there is a volume slider available.
 
 
