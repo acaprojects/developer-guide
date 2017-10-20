@@ -81,6 +81,11 @@ This is an example of controlling volume and power for the same device.
         [(value)]="model.volume"
         exec
     >Volume is {{model.volume}}</span>
+
+    <!--
+        NOTE:: the binding doesn't have to occur on the element making changes to the value.
+          In this case the binding occurs on the span element above.
+     -->
     <input #volSlider type="range" (change)="model.volume = volSlider.value" min="0" max="100" />
 </div>
 
