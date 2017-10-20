@@ -11,7 +11,7 @@ It abstracts the complexity of the WebSocket API and manages the following:
 
 The magic of Angular is that it allows you to build a dynamic web page in a declarative manner.
 
-* NOTE:: for universal support between mouse and touch devices we use the [Hammer library](http://hammerjs.github.io/recognizer-press/) which has action recognizers, such as pressing, swiping, pinching, etc.
+?> for universal support between mouse and touch devices we use the [Hammer library](http://hammerjs.github.io/recognizer-press/) which has action recognizers, such as pressing, swiping, pinching, etc.
 
 
 ## Status Variable Bindings

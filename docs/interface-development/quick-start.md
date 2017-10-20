@@ -3,9 +3,9 @@
 Building an interface for ACAEngine is the same as building any generic web application.
 We try to follow industry best practices and leverage the tools used by most developers in the industry.
 
-* NOTE:: Windows users are recommended to install the [Linux subsystem for Windows](https://msdn.microsoft.com/en-au/commandline/wsl/install_guide).
-  * Tools such as git and your preferred text editor make sense to run on Win32
-  * Whilst both NodeJS and Ruby can run natively on Windows they are much harder to manage and use effectively when compared to their Linux counterparts.
+!> Windows users are recommended to install the [Linux subsystem for Windows](https://msdn.microsoft.com/en-au/commandline/wsl/install_guide).
+
+?> Tools such as git and your preferred text editor make sense to run on Win32. Whilst both NodeJS and Ruby can run natively on Windows they are much harder to manage and use effectively when compared to their Linux counterparts.
 
 
 ## What you will need
