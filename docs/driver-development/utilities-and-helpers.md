@@ -224,6 +224,23 @@ wake_device(mac_address_string, '192.168.3.1')
 ```
 
 
+### Ping an endpoint
+
+Uses the operating systems `ping` utility to perform a ping.
+
+```ruby
+# perform the ping
+ping = ::UV::Ping.new(remote_address)
+ping.ping      # true / false to indicate success / failure
+
+# check out the ping results
+ping.pingable  # true / false to indicate success / failure
+ping.ip        # IP pinged (remote_address can be a domain name)
+ping.exception # any error messages
+ping.warning   # any warning messages
+```
+
+
 ### CRC Checks
 
 [github project](https://github.com/dearblue/ruby-crc) and [supported CRC checks](https://github.com/dearblue/ruby-crc/blob/master/lib/crc/_modules.rb)
