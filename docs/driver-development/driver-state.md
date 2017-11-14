@@ -93,11 +93,11 @@ signal_status(:my_array)    # => forces a change notification to subscribers
 The recommended method for updating complex state is:
 
 1. **Duplicate** `my_array = ['my', 'array'].dup` or `{complex:['hash']}.deep_dup`
-  * deep_dup when in doubt
+  * `.deep_dup` when in doubt
 2. **Update** `my_array << 8`
 3. **Apply** `self[:my_array] = my_array`
 
-This can be achieved simply by using operations that create a new object
+This can be achieved by using operations that create a new object
 
 ```ruby
 
