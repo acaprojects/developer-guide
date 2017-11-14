@@ -4,7 +4,8 @@
     + [Setup a Development Environment](getting-started/setup.md)
 - Device Driver Development
     + [Discovery and Metadata](driver-development/driver-discovery.md)
-    + [Writing Device Drivers](driver-development/device-drivers.md)
+    + [Driver State](driver-development/driver-state.md)
+    + [Device Drivers](driver-development/device-drivers.md)
     + [Response Tokenisation](driver-development/response-tokenisation.md)
     + [Testing and Debugging](driver-development/testing-drivers.md)
     + [Logging and Security](driver-development/logging-and-security.md)
