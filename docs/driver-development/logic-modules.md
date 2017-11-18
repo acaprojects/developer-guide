@@ -86,15 +86,19 @@ You can subscribe to status variable updates so it is easy to react to changes w
 ```ruby
 device_index = 1
 ref = system.subscribe(:Device, device_index, :status_variable) do |notification|
-    notification.value # => the current value of the status variable
+    notification.value     # => value of the status variable that triggered this notification
+    notification.old_value # => the value of the variable before this change
 
     # Also comes with the subscription information
-    notification.sys_name # => The system name
-    notification.sys_id # => The system ID this value originated from
-    notification.mod_name # => The generic module name 
-    notification.mod_id # => The module database ID
-    notification.index # => The device index
-    notification.status # => the name of the status variable
+    notification.sys_name  # => The system name
+    notification.sys_id    # => The system ID this value originated from
+    notification.mod_name  # => The generic module name 
+    notification.mod_id    # => The module database ID
+    notification.index     # => The device index
+    notification.status    # => the name of the status variable
+
+    # And a reference to the subscription should you want to unsubscribe
+    unsubscribe(notification.subscription)
 end
 
 # Then to unsubscribe (you'll have to keep track of the subscription reference)

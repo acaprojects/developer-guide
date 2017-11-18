@@ -42,7 +42,8 @@ All drivers can subscribe to their own state.
 # Subscribe to internal state
 
 ref = subscribe(:state_variable) do |notify|
-    notify.value # => the current value of the status variable
+    notification.value     # => value of the status variable that triggered this notification
+    notification.old_value # => the value of the variable before this change
 
     # Also comes with the subscription information
     notify.sys_name # => The system name
@@ -51,6 +52,9 @@ ref = subscribe(:state_variable) do |notify|
     notify.mod_id   # => The module database ID
     notify.index    # => The device index
     notify.status   # => the name of the status variable
+
+    # And a reference to the subscription should you want to unsubscribe
+    unsubscribe(notification.subscription)
 end
 
 # Optionally unsubscribe
