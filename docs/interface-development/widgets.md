@@ -13,7 +13,7 @@ We recommend using our widgets before looking at third party libraries for the f
 
 ### 1. They are user aware
 
-When a page loads, widgets are often loaded with default values while they wait for the offical value from the server.
+When a page loads, widgets are often loaded with default values while they wait for the official value from the server.
 You don't want these default values triggering change events and the defaults being sent to the server.
 
 > Only a users actions should send requests to the server
@@ -34,9 +34,9 @@ The server will also be sending value updates during the period of interaction. 
 ### 3. They are scope aware
 
 To reduce required bandwidth, we recommend that you only bind to values required to display the current screen.
-This is quite trivial with Angular as bindings are created and destroyed with lifecycle hooks.
+This is quite trivial with Angular as bindings are created and destroyed with life cycle hooks.
 
-Angular optimises for redraw which means [lifecycle events](https://www.bennadel.com/blog/3064-ng-content-life-cycle-is-controlled-by-the-parent-view-not-the-consumer-in-angular-2-beta-11.htm) might not occur as expected.
+Angular is optimised for redraw which means [life cycle events](https://www.bennadel.com/blog/3064-ng-content-life-cycle-is-controlled-by-the-parent-view-not-the-consumer-in-angular-2-beta-11.htm) might not occur as expected.
 
-* Tabs and popups are the most common offenders
-* ACA widgets avoid this pitfal
+* Tabs and pop-ups are the most common offenders
+* ACA widgets avoid this pitfall

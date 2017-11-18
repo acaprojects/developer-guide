@@ -110,4 +110,4 @@ The result of this code is a power toggle button for the device and when the dev
 It is possible to request debug logging to be redirected to your browser.
 This provides a real time window into the inner workings of the driver as it is executing.
 
-Useful for technical or administation pages.
+Useful for technical or administration pages.
