@@ -17,6 +17,7 @@
 - User Interfaces
     + [Quick Start](interface-development/quick-start.md)
     + [The Client Library](interface-development/composer.md)
+    + [Virtual Systems](interface-development/virtual-systems.md)
     + [Interface Widgets](interface-development/widgets.md)
 - System Administration
 - Deployment

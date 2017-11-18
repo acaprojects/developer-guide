@@ -1,6 +1,6 @@
 # Composer - The Client Library
 
-Composer is an Angular library that simplifies interacting with ACAEngine.
+[Composer](https://github.com/acaprojects/a2-composer) is an Angular library that simplifies interacting with ACAEngine.
 It abstracts the complexity of the WebSocket API and manages the following:
 
 * Directives for binding to Status variables
@@ -107,3 +107,7 @@ The result of this code is a power toggle button for the device and when the dev
 
 ## Driver Debug Bindings
 
+It is possible to request debug logging to be redirected to your browser.
+This provides a real time window into the inner workings of the driver as it is executing.
+
+Useful for technical or administation pages.
