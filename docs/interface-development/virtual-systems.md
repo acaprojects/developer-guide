@@ -132,7 +132,7 @@ Functions are scoped to the driver. So you can modify the state of driver by usi
 ```
 
 
-> You only need to define functions that modify the state that you are tracking. The absense of a mock function won't throw errors.
+> You only need to define functions that modify the state that you are tracking. The absence of a mock function won't throw errors.
 
 Logic modules, such as `Presentation` in the example, will communicate with devices in a system.
 This is achieved by providing a helper `$system` which provides access to the system definition.
