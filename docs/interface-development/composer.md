@@ -1,6 +1,6 @@
 # Composer - The Client Library
 
-[Composer](https://github.com/acaprojects/a2-composer) is an Angular library that simplifies interacting with ACAEngine.
+[Composer](https://github.com/acaprojects/ngx-composer) is an Angular library that simplifies interacting with ACAEngine.
 It abstracts the complexity of the WebSocket API and manages the following:
 
 * Directives for binding to Status variables
@@ -92,17 +92,68 @@ The result of this code is a power toggle button for the device and when the dev
 
 ## Calling Functions in the Driver
 
+<button
+    binding
+    [sys]="system"
+    mod="Display"
+    <!-- bind="power" -->
+    [value]="model.power"  <!-- change to this variable will cause execute to fire, inital value is ignored -->
+    exec="power"
+    [params]="[model.power, model.index]"
+    (press)="model.power = !model.power"
+>Touch to Toggle Power</button>
+
+
+```TypeScript
+
+import { SystemsService } from `@acaprojects/ngx-composer`
+@Component({ ... })
+class DemoExec {
+  constructor(private service: SystemsService) { }
+
+  // Do what you want to keep track of the current system
+  // i.e use route or query params or local storgage for system ID
+  power_on_display() {
+    this.service.get(`sys-B0`).get(`Display`).exec(`power`, true);
+  }
+}
+
+```
 
 
 
 ## Resource Access
 
+```TypeScript
 
+import { SystemsService } from `@acaprojects/ngx-composer`
+@Component({ ... })
+class DemoExec {
+  constructor(private service: SystemsService) { }
+
+  get_list_of_systems() {
+    // Returns a list of systems matching the seatch query
+    this.service.resources.get(`System`).get({
+      q: `search`
+    });
+
+    // Gets the system information for this system
+    this.service.resources.get(`System`).get({
+      id: `sys-B0`
+    });
+  }
+}
+
+
+```
 
 
 ## Authentication
 
-
+On root component
+import SystemsService
+in ngOnInit
+this.systems.setup(config); 
 
 
 ## Driver Debug Bindings

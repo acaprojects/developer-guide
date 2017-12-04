@@ -7,7 +7,7 @@ Interface development should not rely on having access to physical hardware.
 
 ## Development Settings
 
-There is a [settings file](https://github.com/acaprojects/demo-ui/blob/master/src/assets/settings.json) that defines how you would like to work.
+There is a [settings file](https://github.com/acaprojects/ngx-composer-starter/blob/master/src/assets/settings.json) that defines how you would like to work.
 
 * The `"env"` key can be set to either `"dev"` or `"prod"`
   * When in `"dev"` mode the system will talk to the virtual systems
@@ -22,7 +22,7 @@ Production mode can also be used for development.
 
 ## Building a system mockup
 
-Please take a look at the demo [mock system](https://github.com/acaprojects/demo-ui/blob/master/src/app/shared/mock-system.ts)
+Please take a look at the demo [mock system](https://github.com/acaprojects/ngx-composer-starter/blob/master/src/app/shared/mock/system.mockup.ts)
 
 > It is worth going over [Key Concepts](getting-started/key-concepts.md) before continuing
 

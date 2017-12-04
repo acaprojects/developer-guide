@@ -37,8 +37,8 @@ This is a project that can run against the ACAEngine development environment, fo
 
 1. Create a folder for storing your interface projects
 1. Open a command prompt at that location
-1. Clone the [Demo UI](https://github.com/acaprojects/demo-ui) `git clone https://github.com/acaprojects/demo-ui.git`
-1. `cd demo-ui` to move into the folder
+1. Clone the [Composer Starter](https://github.com/acaprojects/ngx-composer-starter) `git clone https://github.com/acaprojects/ngx-composer-starter.git`
+1. `cd ngx-composer-starter` to move into the folder
 1. `npm install` to install the project dependencies
 1. `gulp serve` to run the development server
 
