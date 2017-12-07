@@ -176,10 +176,10 @@ You can `get` the following resource factories:
 
 Authentication with Engine is handled automatically by composer.
 
-# Composer will request `/auth/authority` which contains information about how to authenticate
-# If composer doesn't have a valid OAuth2 token it will redirect to the defined login page
-# A light weight page `oauth-resp.html` is used to extract the token and save it in local storage
-# A client side redirect back to the initial route
+1. Composer will request `/auth/authority` which contains information about how to authenticate
+1. If composer doesn't have a valid OAuth2 token it will redirect to the defined login page
+1. A light weight page `oauth-resp.html` is used to extract the token and save it in local storage
+1. A client side redirect back to the initial route
 
 For this to occur composer must be configured as part of the applications load sequence.
 
@@ -187,10 +187,10 @@ For this to occur composer must be configured as part of the applications load s
 
 The composer starter example
 
-# ensures the request to `/auth/authority` succeeds
-# configures connection and OAuth2 details
-# configures mode: production, development and if a mock / virtual control system should be used
-# calls `this.systems.setup(config);` which kicks off the authentication process as required
+1. ensures the request to `/auth/authority` succeeds
+1. configures connection and OAuth2 details
+1. configures mode: production, development and if a mock / virtual control system should be used
+1. calls `this.systems.setup(config);` which kicks off the authentication process as required
 
 
 ## Driver Debug Bindings
