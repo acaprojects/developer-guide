@@ -11,7 +11,7 @@ It abstracts the complexity of the WebSocket API and manages the following:
 
 The magic of Angular is that it allows you to build a dynamic web page in a declarative manner.
 
-* NOTE:: for universal support between mouse and touch devices we use the [Hammer library](http://hammerjs.github.io/recognizer-press/) which has action recognizers, such as pressing, swiping, pinching, etc.
+> NOTE:: for universal support between mouse and touch devices we use the [Hammer library](http://hammerjs.github.io/recognizer-press/) which has action recognizers, such as pressing, swiping, pinching, etc.
 
 
 ## Status Variable Bindings
@@ -92,27 +92,38 @@ The result of this code is a power toggle button for the device and when the dev
 
 ## Calling Functions in the Driver
 
+You can call functions without binding to values first.
+
+```html
+
+<!-- template method -->
 <button
     binding
     [sys]="system"
     mod="Display"
-    <!-- bind="power" -->
-    [value]="model.power"  <!-- change to this variable will cause execute to fire, inital value is ignored -->
+    <!-- a change to this value will cause execute to fire, inital value is ignored -->
+    [value]="model.power"
     exec="power"
+    <!-- params that will be passed to the function can be customised -->
     [params]="[model.power, model.index]"
+
+    <!-- Event triggering the exec -->
     (press)="model.power = !model.power"
 >Touch to Toggle Power</button>
 
+```
 
-```TypeScript
+
+You can also execute functions from type script
+
+```typescript
 
 import { SystemsService } from `@acaprojects/ngx-composer`
 @Component({ ... })
 class DemoExec {
   constructor(private service: SystemsService) { }
 
-  // Do what you want to keep track of the current system
-  // i.e use route or query params or local storgage for system ID
+  // use route or query params or local storgage for system ID
   power_on_display() {
     this.service.get(`sys-B0`).get(`Display`).exec(`power`, true);
   }
@@ -124,7 +135,9 @@ class DemoExec {
 
 ## Resource Access
 
-```TypeScript
+Engine exposes a rich set of APIs that can be easily accessed via composer resources on the `SystemsService`
+
+```typescript
 
 import { SystemsService } from `@acaprojects/ngx-composer`
 @Component({ ... })
@@ -144,21 +157,57 @@ class DemoExec {
   }
 }
 
-
 ```
+
+You can `get` the following resource factories:
+
+* Dependency: available drivers
+* Trigger: trigger CRUD
+* System: control system CRUD
+* Module: module CRUD
+* Zone: zone CRUD
+* User: Current user details
+* Log: Access logs
+
+!> Additional documentation on the REST API and these factories will be added soon.
 
 
 ## Authentication
 
-On root component
-import SystemsService
-in ngOnInit
-this.systems.setup(config); 
+Authentication with Engine is handled automatically by composer.
+
+# Composer will request `/auth/authority` which contains information about how to authenticate
+# If composer doesn't have a valid OAuth2 token it will redirect to the defined login page
+# A light weight page `oauth-resp.html` is used to extract the token and save it in local storage
+# A client side redirect back to the initial route
+
+For this to occur composer must be configured as part of the applications load sequence.
+
+> See the example of this in [Composer Starter](https://github.com/acaprojects/ngx-composer-starter/blob/master/src/app/app.component.ts)
+
+The composer starter example
+
+# ensures the request to `/auth/authority` succeeds
+# configures connection and OAuth2 details
+# configures mode: production, development and if a mock / virtual control system should be used
+# calls `this.systems.setup(config);` which kicks off the authentication process as required
 
 
 ## Driver Debug Bindings
 
 It is possible to request debug logging to be redirected to your browser.
 This provides a real time window into the inner workings of the driver as it is executing.
+
+```html
+
+<div
+    debug
+    [sys]="model.system_id"
+    [mod]="model.module_id"
+    numLines="20"
+    [(output)]="model.output"
+>{{model.output.join("<br />")}}</div>
+
+```
 
 Useful for technical or administration pages.
