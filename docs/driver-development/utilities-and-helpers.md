@@ -34,9 +34,9 @@ include ::Orchestrator::Transcoder
 
 ## Protocols
 
-### Websockets
+### WebSockets
 
-Enables [websocket communication](https://en.wikipedia.org/wiki/WebSocket) using a standard TCP socket driver.
+Enables [WebSocket communication](https://en.wikipedia.org/wiki/WebSocket) using a standard TCP socket driver.
 
 ```ruby
 require 'protocols/websocket'
