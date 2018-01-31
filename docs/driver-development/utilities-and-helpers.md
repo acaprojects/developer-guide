@@ -34,6 +34,104 @@ include ::Orchestrator::Transcoder
 
 ## Protocols
 
+### Websockets
+
+Enables [websocket communication](https://en.wikipedia.org/wiki/WebSocket) using a standard TCP socket driver.
+
+```ruby
+require 'protocols/websocket'
+
+class WebsocketClient
+    include ::Orchestrator::Constants
+    include ::Orchestrator::Transcoder
+
+    tcp_port 80
+    wait_response false
+
+    def connected
+        new_websocket_client
+    end
+
+    def disconnected
+        # clear the keepalive ping
+        schedule.clear
+    end
+
+    # ====================
+    # Websocket callbacks:
+    # ====================
+
+    # websocket ready
+    def on_open
+        schedule.every('30s') do
+            @ws.ping('keepalive')
+        end
+    end
+
+    def on_message(raw_string)
+        # Process request here
+        request = JSON.parse(raw_string)
+        # ...
+    end
+
+    def on_ping(payload)
+        # optional
+    end
+
+    def on_pong(payload)
+        # optional
+    end
+
+    # connection is closing
+    def on_close(event)
+        # event.code
+        # event.reason
+    end
+
+    # connection is closing
+    def on_error(error)
+        # error.message
+    end
+
+    # ====================
+
+
+    # Send a text message
+    def some_request
+        @ws.text "hello"
+
+        # or json format etc
+
+        @ws.text({
+            some: "message",
+            count: 234
+        }.to_json)
+    end
+
+    # send a binary message
+    def binary_send
+        @ws.binary("binstring".bytes)
+
+        # or
+
+        @ws.binary hex_to_byte("0xdeadbeef")
+    end
+
+    protected
+
+    def new_websocket_client
+        @ws = Protocols::Websocket.new(self, "ws://#{remote_address}/path/to/ws/endpoint")
+    end
+
+    def received(data, resolve, command)
+        @ws.parse(data)
+        :success
+    end
+end
+
+```
+
+
 ### Telnet
 
 Implements the [telnet standard](https://en.wikipedia.org/wiki/Telnet) so that it is easy to communicate with devices that implement control codes or require negotiation.
