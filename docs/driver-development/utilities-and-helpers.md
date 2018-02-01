@@ -38,12 +38,17 @@ include ::Orchestrator::Transcoder
 
 Enables [WebSocket communication](https://en.wikipedia.org/wiki/WebSocket) using a standard TCP socket driver.
 
+* For more details on the websocket API see https://github.com/faye/websocket-driver-ruby#driver-api
+
 ```ruby
 require 'protocols/websocket'
 
 class WebsocketClient
     include ::Orchestrator::Constants
     include ::Orchestrator::Transcoder
+
+    generic_name :Websocket
+    descriptive_name 'Websocket example'
 
     tcp_port 80
     wait_response false
@@ -56,45 +61,6 @@ class WebsocketClient
         # clear the keepalive ping
         schedule.clear
     end
-
-    # ====================
-    # Websocket callbacks:
-    # ====================
-
-    # websocket ready
-    def on_open
-        schedule.every('30s') do
-            @ws.ping('keepalive')
-        end
-    end
-
-    def on_message(raw_string)
-        # Process request here
-        request = JSON.parse(raw_string)
-        # ...
-    end
-
-    def on_ping(payload)
-        # optional
-    end
-
-    def on_pong(payload)
-        # optional
-    end
-
-    # connection is closing
-    def on_close(event)
-        # event.code
-        # event.reason
-    end
-
-    # connection is closing
-    def on_error(error)
-        # error.message
-    end
-
-    # ====================
-
 
     # Send a text message
     def some_request
@@ -120,13 +86,59 @@ class WebsocketClient
     protected
 
     def new_websocket_client
+        # NOTE:: you must use wss:// when using port 443 (TLS connection)
         @ws = Protocols::Websocket.new(self, "ws://#{remote_address}/path/to/ws/endpoint")
+        # @ws.add_extension # https://github.com/faye/websocket-extensions-ruby
+        # @ws.set_header(name, value) # Sets a custom header to be sent as part of the handshake
+        @ws.start
     end
 
     def received(data, resolve, command)
         @ws.parse(data)
         :success
     end
+
+    # ====================
+    # Websocket callbacks:
+    # ====================
+
+    # websocket ready
+    def on_open
+        logger.debug { "Websocket connected" }
+        schedule.every('30s') do
+            @ws.ping('keepalive')
+        end
+    end
+
+    def on_message(raw_string)
+        logger.debug { "received: #{raw_string}" }
+
+        # Process request here
+        # request = JSON.parse(raw_string)
+        # ...
+    end
+
+    def on_ping(payload)
+        logger.debug { "received ping: #{payload}" }
+        # optional
+    end
+
+    def on_pong(payload)
+        logger.debug { "received pong: #{payload}" }
+        # optional
+    end
+
+    # connection is closing
+    def on_close(event)
+        logger.debug { "closing... #{event.code} #{event.reason}" }
+    end
+
+    # connection is closing
+    def on_error(error)
+        logger.debug { "ERROR! #{error.message}" }
+    end
+
+    # ====================
 end
 
 ```
