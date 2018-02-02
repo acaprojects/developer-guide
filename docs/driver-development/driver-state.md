@@ -131,7 +131,7 @@ Every driver can schedule events to occur in a number of different ways. Schedul
 | Function | Arguments | Description |
 | :---         |     :---     |          :--- |
 | `schedule.in` | String or Integer | schedule a task to run once in the time specified (formats above) |
-| `schedule.at` | Time or String | schedule a task at a time represented by a [Time object](http://ruby-doc.org/core-2.5.0/Time.html) or a parseable [time string](http://ruby-doc.org/stdlib-2.5.0/libdoc/date/rdoc/DateTime.html#parse-method) |
+| `schedule.at` | Time or String | schedule a task at a time represented by a [Time object](http://ruby-doc.org/core-2.5.0/Time.html) or a parsable [time string](http://ruby-doc.org/stdlib-2.5.0/libdoc/date/rdoc/DateTime.html#parse-method) |
 | `schedule.every` | String or Integer | schedule a task to run every time period on repeat |
 | `schedule.cron` | String | A schedule that will fire based on a [CRON](https://en.wikipedia.org/wiki/Cron) string |
 | `schedule.clear` |  | shortcut for cancelling any active schedules |
