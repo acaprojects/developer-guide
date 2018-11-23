@@ -66,14 +66,14 @@ const merge = <T extends NodeJS.ReadWriteStream>
  * :: ReadWriteStream a, ReadableStream b => a -> [b] -> a
  */
 const pipeTo = <T extends NodeJS.ReadWriteStream, U extends NodeJS.ReadableStream>
-    (dest: T) => (src: U[]) => R.compose(pipe(dest), merge)(src);
+    (dest: T) => (src: U[]) => R.compose(pipe(dest), (merge as any))(src);
 
 /**
  * Create a pipe that will send the incoming contents to a folder on disk.
  *
  * :: ReadableStream a, ReadWriteStream b => string -> [a] -> b
  */
-const writeTo = R.compose(pipeTo, (folder: string) => gulp.dest(folder));
+const writeTo = R.compose((pipeTo as any), (folder: string) => gulp.dest(folder));
 
 /**
  *  Compile a TypeScript project.
@@ -82,8 +82,8 @@ const writeTo = R.compose(pipeTo, (folder: string) => gulp.dest(folder));
  */
 const compileProject = (project: tsc.Project) => {
     const compile = pipeTo(project());
-    const {js, dts} = compile([project.src()]);
-    return writeTo(project.config.compilerOptions.outDir)([js, dts]);
+    const { js, dts } = compile([project.src()]);
+    return (writeTo(project.config.compilerOptions.outDir) as any)([js, dts]);
 };
 
 /**
@@ -111,6 +111,7 @@ const shellProcess = (command: string) => (args: string[] = []) =>
 const proof = (globs: string[]) =>
     R.compose(
         shellProcess('node node_modules/markdown-proofing/cli.js'),
+        // @ts-ignore
         R.append('--color')
     )(globs)
         .then(([stdout, _]) => stdout)
@@ -220,7 +221,7 @@ gulp.task('package:static', () =>
     (
         (...globs: string[]) => {
             const site = gulp.src(globs);
-            return writeTo(paths.public)([site]);
+            return (writeTo(paths.public) as any)([site]);
         }
     )
     (
@@ -244,10 +245,10 @@ gulp.task('watch:content', () =>
 
             const relativePath = file => relative(__dirname, file.path);
 
-            const proofFile = R.compose(proof, R.of, relativePath);
+            const proofFile = R.compose(proof as any, R.of, relativePath);
 
             const proofStream = (cb: (summary: string) => void) =>
-                tap(f => proofFile(f).then(cb).catch(cb));
+                tap(f => (proofFile(f) as any).then(cb).catch(cb));
 
             const proofChanged = (src: string[]) =>
                 gulp.src(src)

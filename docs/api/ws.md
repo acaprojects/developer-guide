@@ -248,7 +248,7 @@ request failed | 3 | an error was raised or a promise rejected when processing t
 unknown command | 4 | the command type unknown, the connection is logged as suspicious
 system not found | 5 | the system does not exist
 module not found | 6 | the module does not exist in the system
-unexpected failure | 7 | a framework level error occured (this should never happen)
+unexpected failure | 7 | a framework level error occurred (this should never happen)
 
 
 Detailed error backtraces can be seen when remote debugging using the [debug](#debug) command or by inspecting server logs.

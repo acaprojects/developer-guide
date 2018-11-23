@@ -7,7 +7,7 @@ This can be done with either client credentials flow or Resource Owner Password 
 
 ### Resource Owner Password Credentials
 
-make a POST request to the OAuth providers auth/oauth/token endpoint, with the params:
+make a POST request to the OAuth providers auth/oauth/token endpoint, with the parameters:
 
 ```json
 {

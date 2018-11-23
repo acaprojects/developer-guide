@@ -16,7 +16,9 @@ ClearOne
 Extron
 Byebug
 BACnet
+oauth
 OAuth
+OAuth2
 ruby-netsnmp
 rspec-expectations
 Savon
@@ -44,4 +46,4 @@ virtualisation
 virtualised
 WebSocket
 WebSockets
-OAuth
+backtraces
