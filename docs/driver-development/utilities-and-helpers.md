@@ -34,6 +34,116 @@ include ::Orchestrator::Transcoder
 
 ## Protocols
 
+### WebSockets
+
+Enables [WebSocket communication](https://en.wikipedia.org/wiki/WebSocket) using a standard TCP socket driver.
+
+* For more details on the websocket API see https://github.com/faye/websocket-driver-ruby#driver-api
+
+```ruby
+require 'protocols/websocket'
+
+class WebsocketClient
+    include ::Orchestrator::Constants
+    include ::Orchestrator::Transcoder
+
+    generic_name :Websocket
+    descriptive_name 'Websocket example'
+
+    tcp_port 80
+    wait_response false
+
+    def connected
+        new_websocket_client
+    end
+
+    def disconnected
+        # clear the keepalive ping
+        schedule.clear
+    end
+
+    # Send a text message
+    def some_request
+        @ws.text "hello"
+
+        # or json format etc
+
+        @ws.text({
+            some: "message",
+            count: 234
+        }.to_json)
+    end
+
+    # send a binary message
+    def binary_send
+        @ws.binary("binstring".bytes)
+
+        # or
+
+        @ws.binary hex_to_byte("0xdeadbeef")
+    end
+
+    protected
+
+    def new_websocket_client
+        # NOTE:: you must use wss:// when using port 443 (TLS connection)
+        @ws = Protocols::Websocket.new(self, "ws://#{remote_address}/path/to/ws/endpoint")
+        # @ws.add_extension # https://github.com/faye/websocket-extensions-ruby
+        # @ws.set_header(name, value) # Sets a custom header to be sent as part of the handshake
+        @ws.start
+    end
+
+    def received(data, resolve, command)
+        @ws.parse(data)
+        :success
+    end
+
+    # ====================
+    # Websocket callbacks:
+    # ====================
+
+    # websocket ready
+    def on_open
+        logger.debug { "Websocket connected" }
+        schedule.every('30s') do
+            @ws.ping('keepalive')
+        end
+    end
+
+    def on_message(raw_string)
+        logger.debug { "received: #{raw_string}" }
+
+        # Process request here
+        # request = JSON.parse(raw_string)
+        # ...
+    end
+
+    def on_ping(payload)
+        logger.debug { "received ping: #{payload}" }
+        # optional
+    end
+
+    def on_pong(payload)
+        logger.debug { "received pong: #{payload}" }
+        # optional
+    end
+
+    # connection is closing
+    def on_close(event)
+        logger.debug { "closing... #{event.code} #{event.reason}" }
+    end
+
+    # connection is closing
+    def on_error(error)
+        logger.debug { "ERROR! #{error.message}" }
+    end
+
+    # ====================
+end
+
+```
+
+
 ### Telnet
 
 Implements the [telnet standard](https://en.wikipedia.org/wiki/Telnet) so that it is easy to communicate with devices that implement control codes or require negotiation.
@@ -221,6 +331,23 @@ wake_device(mac_address_string)
 
 # You can define a VLan gateway for a directed broadcast (most common in enterprise)
 wake_device(mac_address_string, '192.168.3.1')
+```
+
+
+### Ping an endpoint
+
+Uses the operating systems `ping` utility to perform a ping.
+
+```ruby
+# perform the ping
+ping = ::UV::Ping.new(remote_address)
+ping.ping      # true / false to indicate success / failure
+
+# check out the ping results
+ping.pingable  # true / false to indicate success / failure
+ping.ip        # IP pinged (remote_address can be a domain name)
+ping.exception # any error messages
+ping.warning   # any warning messages
 ```
 
 
