@@ -49,24 +49,12 @@ const pipe = <T extends NodeJS.WritableStream, U extends NodeJS.ReadableStream>
     (dest: T) => (src: U) => src.pipe(dest);
 
 /**
- * Merge a collection of streams into one.
- *
- * Note: intentionally just a thin wrapper around merge2 in order to provide
- * a generic type restricted to ReadWriteStreams. Without this tsc has issues
- * due to the possible IOptions type.
- *
- * :: ReadWriteStream a => [a] -> a
- */
-const merge = <T extends NodeJS.ReadWriteStream>
-    (streams: T[]) => merge2(streams);
-
-/**
  * Merge and pipe a collection of streams to an arbitrary destination.
  *
  * :: ReadWriteStream a, ReadableStream b => a -> [b] -> a
  */
 const pipeTo = <T extends NodeJS.ReadWriteStream, U extends NodeJS.ReadableStream>
-    (dest: T) => (src: U[]) => R.compose(pipe(dest), (merge as any))(src);
+    (dest: T) => (src: U[]) => R.compose(pipe(dest), merge2)(src);
 
 /**
  * Create a pipe that will send the incoming contents to a folder on disk.
@@ -128,7 +116,7 @@ const bundle = (entry: string, src = paths.build, dest = paths.public) =>
             rollupBabel({ exclude: 'node_modules/**' }),
             rollupUglify()
         ]
-    })
+    } as any)
     .then(b =>
         b.write({
             dest: join(dest, basename(entry)),
