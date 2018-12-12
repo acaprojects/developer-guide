@@ -46,7 +46,10 @@ const analysers = tsProject('analysers');
  * :: WritableStream a, ReadableStream b => a -> b -> a
  */
 const pipe = <T extends NodeJS.WritableStream, U extends NodeJS.ReadableStream>
-    (dest: T) => (src: U) => src.pipe(dest);
+(dest: T) => (src: U) => src.pipe(dest);
+
+const merge = <T extends NodeJS.ReadWriteStream>
+    (streams: T[]) => merge2(streams);
 
 /**
  * Merge and pipe a collection of streams to an arbitrary destination.
@@ -54,7 +57,7 @@ const pipe = <T extends NodeJS.WritableStream, U extends NodeJS.ReadableStream>
  * :: ReadWriteStream a, ReadableStream b => a -> [b] -> a
  */
 const pipeTo = <T extends NodeJS.ReadWriteStream, U extends NodeJS.ReadableStream>
-    (dest: T) => (src: U[]) => R.compose(pipe(dest), merge2)(src);
+    (dest: T) => (src: U[]) => R.compose(pipe(dest), (merge as any))(src);
 
 /**
  * Create a pipe that will send the incoming contents to a folder on disk.
