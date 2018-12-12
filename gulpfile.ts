@@ -57,7 +57,7 @@ const merge = <T extends NodeJS.ReadWriteStream>
  * :: ReadWriteStream a, ReadableStream b => a -> [b] -> a
  */
 const pipeTo = <T extends NodeJS.ReadWriteStream, U extends NodeJS.ReadableStream>
-    (dest: T) => (src: U[]) => R.compose(pipe(dest), (merge as any))(src);
+    (dest: T) => (src: U[]) => R.compose(pipe(dest), (s: any) => merge(s))(src);
 
 /**
  * Create a pipe that will send the incoming contents to a folder on disk.
