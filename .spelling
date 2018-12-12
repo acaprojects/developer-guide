@@ -16,7 +16,9 @@ ClearOne
 Extron
 Byebug
 BACnet
+oauth
 OAuth
+OAuth2
 ruby-netsnmp
 rspec-expectations
 Savon
@@ -50,8 +52,7 @@ mockup
 optimised
 APIs
 API
-OAuth2
-OAuth
+backtraces
 WebSockets
 WebSocket
 parsable

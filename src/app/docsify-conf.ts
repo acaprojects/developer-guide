@@ -18,7 +18,7 @@ const insertHairline: Plugin = docsifyReplace(/\bACAEngine\b/gi, 'ACA&#8202;Engi
     coverpage: 'coverpage.md',
     loadNavbar: false,
     loadSidebar: '../../contents.md',
-    subMaxLevel: 2,
+    subMaxLevel: 3,
     auto2top: true,
     search: {
         noData: `I couldn't find what you are looking for.`

@@ -43,4 +43,4 @@ Changes that you make, such as adding or removing devices, systems, or zones wil
 vagrant destroy
 ```
 
-The `setup-dev` directory contains the entire development environment. You can move this between machines by copying it. Similarly, to remove the ACAEngine development environment from your machine, delete it.
+The `setup-dev` directory contains the entire development environment. You can move this between machines by copying it. Similarly, to completely remove it from your machine, delete it.
